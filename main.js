@@ -84,5 +84,3 @@ class ProductManager{
 }
 
 const product = new ProductManager()
-product.addProduct("first item", "Product 5", 1000, "null", "eee",  3)
-product.addProduct("first item12", "Product 1", 1000, "null", "434",  3)
