@@ -7,7 +7,7 @@ class ProductManager{
         this.path = "productos.txt"
     }
     static id = 0
-        async getProducts(){
+    async getProducts(){
         let obtainProducts
         const Existe = fs.existsSync(this.path)
         if (!Existe) {
@@ -50,7 +50,7 @@ class ProductManager{
 
         const producto = leerProductos.find((prod) => prod.id === id)
         if(producto){
-            console.log(producto)
+            return(producto)
         }else{
             console.log("no se encontro")
         }
@@ -83,4 +83,15 @@ class ProductManager{
     }
 }
 
-const product = new ProductManager()
+async function funcion(){
+    const product = new ProductManager();
+    await product.addProduct("Computadora", "gris", 100000, "ruta", "codigo1", 5)
+    await product.addProduct("Celular", "negro", 800000, "ruta2", "codigo2", 15)
+    await product.addProduct("Consola", "playstation", 900000, "ruta3", "codigo3", 4)
+    await product.addProduct("Consola", "nintendo switch", 600000, "ruta4", "codigo4", 8)
+    await product.addProduct("Tablet", "blanca", 50000, "ruta5", "codigo5", 10)
+}
+
+funcion()
+
+module.exports = ProductManager;
