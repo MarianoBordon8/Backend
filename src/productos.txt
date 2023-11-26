@@ -1,0 +1,47 @@
+[
+  {
+    "title": "Computadora",
+    "description": "gris",
+    "price": 100000,
+    "thumbnail": "ruta1",
+    "id": 1,
+    "code": "codigo1",
+    "stock": 5
+  },
+  {
+    "title": "Consola",
+    "description": "playstation",
+    "price": 900000,
+    "thumbnail": "ruta3",
+    "id": 3,
+    "code": "codigo3",
+    "stock": 4
+  },
+  {
+    "title": "Consola",
+    "description": "nintendo switch",
+    "price": 600000,
+    "thumbnail": "ruta4",
+    "id": 4,
+    "code": "codigo4",
+    "stock": 8
+  },
+  {
+    "title": "Tablet",
+    "description": "blanca",
+    "price": 50000,
+    "thumbnail": "ruta5",
+    "id": 5,
+    "code": "codigo5",
+    "stock": 10
+  },
+  {
+    "title": "Tablet 2",
+    "description": "blanca 2",
+    "price": 50000,
+    "thumbnail": "ruta6",
+    "id": 1,
+    "code": "codigo6",
+    "stock": 10
+  }
+]
