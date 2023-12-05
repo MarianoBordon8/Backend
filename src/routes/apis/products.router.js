@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const ProductManager = require('../managers/ProductManager.js')
+const ProductManager = require('../../managers/ProductManager.js')
 
 const router = Router()
 const productsServ = new ProductManager()
@@ -7,16 +7,18 @@ const productsServ = new ProductManager()
 router.get('/', async (req, res) => {
     const productos = await productsServ.getProducts()
     const limit = req.query.limit;
-    if(productos.length !== 0){if (!limit){
-        return res.json(productos)
-    }else{
-        if(productos.length >= limit){
-            const limitProducts = productos.slice(0, limit);
-            return res.json(limitProducts);
+    if(productos.length !== 0){
+        if (!limit){
+            return res.json(productos)
         }else{
-            return res.send('Fuera de rango')
+            if(productos.length >= limit){
+                const limitProducts = productos.slice(0, limit);
+                return res.json(limitProducts);
+            }else{
+                return res.send('Fuera de rango')
+            }
         }
-    }}else{
+    }else{
         return res.send('No existen productos')
     }
 })

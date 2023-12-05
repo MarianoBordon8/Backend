@@ -4,9 +4,9 @@ const fs = require('fs');
 class ProductManager{
     constructor() {
         this.products = []
-        this.path = 'productos.txt'
+        this.path = './src/productos.txt'
+        this.idAgregar = 1
     }
-    static id = 0
     async getProducts(){
         let obtainProducts
         const Existe = fs.existsSync(this.path)
@@ -28,15 +28,16 @@ class ProductManager{
             if (codeEncontrado){
                 return (`El codigo ${code} ya existe`)
             }else{
-                ProductManager.id++
+                this.idAgregar++
                 const product = {
                     title,
                     description,
                     price,
                     thumbnail,
-                    id: ProductManager.id,
+                    id: this.idAgregar,
                     code,
                     stock,
+                    status: true
                 }
                 this.products.push(product)
                 const productoString = JSON.stringify(this.products, null, 2)

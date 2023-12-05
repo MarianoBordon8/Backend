@@ -1,0 +1,31 @@
+body{
+    background-color: #fff59d;
+    display: flex;
+    justify-content: center;
+}
+
+.divExterior{
+    background-color: #1b3039;
+    color: #eceff1;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 80%;
+    flex-direction: column;
+}
+
+div p{
+    width:100%;
+    display: flex;
+    justify-content: center;
+}
+div h2{
+    width:100%;
+    display: flex;
+    justify-content: center;
+}
+div h3{
+    width:100%;
+    display: flex;
+    justify-content: center;
+}
