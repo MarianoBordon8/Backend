@@ -53,12 +53,12 @@ function agregarprod(){
             stock:stock
         }
         socket.emit('enviar-contenido-producto', objeto)
-        document.getElementById('titulo').value = "";
-        document.getElementById('descripcion').value = "";
-        document.getElementById('codigo').value = "";
-        document.getElementById('precio').value = "";
-        document.getElementById('stock').value = "";
-        document.getElementById('Ruta').value = "";
+        document.getElementById('titulo').value = ""
+        document.getElementById('descripcion').value = ""
+        document.getElementById('codigo').value = ""
+        document.getElementById('precio').value = ""
+        document.getElementById('stock').value = ""
+        document.getElementById('Ruta').value = ""
     })
 }
 
@@ -106,7 +106,7 @@ socket.on('cargar-productos', products =>{
     let card
     const productList = document.querySelector('#productos')
     while (productList.firstChild) {
-        productList.removeChild(productList.firstChild);
+        productList.removeChild(productList.firstChild)
     }
     if(products.length === 0){
         card = document.createElement("div")

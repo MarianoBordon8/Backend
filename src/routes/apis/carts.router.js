@@ -1,18 +1,22 @@
 const { Router } = require('express')
-const CartsManager = require('../../managers/cartsManager.js')
+//const CartsManager = require('../../daos/file/cartsManager.js')
+const { CartMongo } = require('../../daos/mongo/cart.daomongo')
 
 const router = Router()
 
-const cartServ = new CartsManager()
+//const cartServ = new CartsManager()
+const cart = new CartMongo()
 
 router.post('/', async (req, res) => {
-    const mensaje = await cartServ.addCart()
+    //const mensaje = await cartServ.addCart()
+    const mensaje = await cart.addCart()
     res.send(mensaje)
-});
+})
 
 router.get('/:cid', async (req, res) => {
     const cid = req.params.cid
-    const card = await cartServ.getCartById(cid)
+    //const card = await cartServ.getCartById(cid)
+    const card = await cart.getCartById(cid)
     if(card){
         return res.json(card)
     }else{
@@ -22,7 +26,8 @@ router.get('/:cid', async (req, res) => {
 
 router.post('/:cid/products/:pid', async (req, res) => {
     const {cid, pid} = req.params
-    const respuesta = await cartServ.addProductToCart(cid, pid)
+    //const respuesta = await cartServ.addProductToCart(cid, pid)
+    const respuesta = await cart.addProductToCart(cid, pid)
     res.send(respuesta)
 })
 

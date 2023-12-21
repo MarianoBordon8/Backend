@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs')
 
 
 class ProductManager{
@@ -59,7 +59,7 @@ class ProductManager{
         const i = obtainProducts.findIndex(elm => elm.id===id)
 
         if (i === -1) {
-            return 'Producto no encontrado';
+            return 'Producto no encontrado'
         } else {
             const newProducts = obtainProducts.filter((produc) => produc.id != id)
             this.products = newProducts
@@ -72,18 +72,18 @@ class ProductManager{
     async updateProduct(id, data) {
         let obtainProducts = await fs.promises.readFile(this.path, 'utf-8')
         obtainProducts = JSON.parse(obtainProducts)
-        let indice = obtainProducts.findIndex(prod => prod.id === parseInt(id));
+        let indice = obtainProducts.findIndex(prod => prod.id === parseInt(id))
 
         if (indice !== -1) {
-            obtainProducts[indice] = { ...obtainProducts[indice], ...data, id };
+            obtainProducts[indice] = { ...obtainProducts[indice], ...data, id }
             const productoString = JSON.stringify(obtainProducts, null, 2)
             await fs.promises.writeFile(this.path, productoString)
             this.products = obtainProducts
             return('se actualizo correctamente')
         } else {
-            return('Product not found');
+            return('Product not found')
         }
     }
 }
 
-module.exports = ProductManager;
+module.exports = ProductManager

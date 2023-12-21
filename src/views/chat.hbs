@@ -1,0 +1,18 @@
+<h3 class="title">Chat</h3>
+<div class="element">
+    <form id="myForm">
+        <label for="chatBox">Escribe tu mensaje:</label>
+        <input id="chatBox" type="text" name="chatBox" class="input">
+
+        <label for="chatUser">Ingresa tu e-mail:</label>
+        <input id="chatUser" type="email" name="chatUser" class="input">
+
+        <button type="submit">Enviar</button>
+    </form>
+</div>
+<div id="messages">
+</div>
+
+<script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js "></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/chat.js"></script>
