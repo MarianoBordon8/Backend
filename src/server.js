@@ -4,8 +4,11 @@ const productsRouter = require('./routes/apis/products.router.js')
 const cartRouter = require('./routes/apis/carts.router.js')
 const viewsRouter = require('./routes/views.router.js')
 const { Server } = require('socket.io')
-const ProductManager = require('./daos/file/ProductManager.js')
+//const ProductManager = require('./daos/file/ProductManager.js')
 const { connectdb } = require('./config/index.js')
+//********
+const userRouter = require('./routes/apis/user.router.js')
+//********
 
 const { ProductMongo } = require('./daos/mongo/products.daomongo.js')
 const { MessageMongo } = require('./daos/mongo/message.daomongo.js')
@@ -30,7 +33,9 @@ app.set('views', __dirname + '/views')
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartRouter)
 app.use('/views', viewsRouter)
-
+//********
+app.use('/api/users', userRouter)
+//********
 
 const serverHttp = app.listen(PORT, () => {
     console.log('funciono')

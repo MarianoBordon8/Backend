@@ -1,8 +1,22 @@
-const { Schema, model } = require("mongoose")
+const { Schema, model } = require('mongoose')
 
-const cartSchema = new Schema({
-    products: { type: Array, default: [] },
-    atCreated: { type: Date, default: Date()}
+const colleciton = 'carts'
+
+const CartSchema = new Schema({
+    products: {
+        type: [{
+            product: {
+                type: Schema.Types.ObjectId,
+                ref: 'products'
+            }
+        }]
+    }
 })
 
-exports.cartModel = model('carts', cartSchema)
+CartSchema.pre('findOne', function(){
+    this.populate('products.product')
+})
+
+const cartModel = model(colleciton, CartSchema)
+
+module.exports = { cartModel }

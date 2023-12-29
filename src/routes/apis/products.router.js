@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
 router.get('/:pid', async (req, res) => {
     const pid = req.params.pid
     //const producto = await productsServ.getProductById(pid)
-    const producto = await products.getProductById(pid)
+    const producto = await products.getProductsById(pid)
     if(producto){
         return res.json(producto)
     }else{

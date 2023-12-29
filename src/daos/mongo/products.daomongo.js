@@ -5,9 +5,12 @@ class ProductDaoMongo {
         this.model = productModel
     }
 
-    getProducts = async () => {
+    getProducts = async (opcionesPaginacion) => {
         try {
-            return await this.model.find()
+            //se usa para el /home
+            //return await this.model.find({}).lean()
+            //se usa para el /products
+            return await this.model.paginate({}, opcionesPaginacion)
         } catch (error) {
             console.log(error)
         }
@@ -21,9 +24,9 @@ class ProductDaoMongo {
         }
     }
 
-    addProduct = async ({ title, description, price, thumbnail , code, stock }) => {
+    addProduct = async ({ title, description, price, thumbnail , code, stock, categoria }) => {
         try {
-            if ( !title || !description || !price || !thumbnail || !code || !stock) {
+            if ( !title || !description || !price || !thumbnail || !code || !stock || !categoria) {
                 return 'ERROR: debe completar todos los campos'
             }else{
                 const codeEncontrado = await this.model.findOne({code: code})
@@ -31,6 +34,7 @@ class ProductDaoMongo {
                     return (`El codigo ${code} ya existe`)
                 }else{
                     const newProduct = {
+                        categoria: categoria,
                         title,
                         description,
                         code,
