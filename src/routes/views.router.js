@@ -3,11 +3,20 @@ const { Router } = require('express')
 const { ProductMongo } = require('../daos/mongo/products.daomongo')
 const { CartMongo } = require('../daos/mongo/cart.daomongo')
 const { usersModel } = require('../models/users.model.js')
+const { authentication } = require('../middleware/auth.middleware.js')
 
 const router = Router()
 //const productsServ = new ProductManager()
 const products = new ProductMongo()
 const carts = new CartMongo()
+
+router.get('/register', async (req, res) =>{
+    res.render('register.hbs', {})
+})
+
+router.get('/login', async (req, res) =>{
+    res.render('login.hbs', {})
+})
 
 
 
@@ -24,7 +33,7 @@ router.get('/', async (req, res) =>{
     })
 })
 
-router.get('/realtimeproducts', async (req, res) =>{
+router.get('/realtimeproducts', authentication, async (req, res) =>{
     res.render('realTimeProducts.hbs', {
         titulo: 'realTimeProducts',
         style: 'realTimeProducts.css'
@@ -67,9 +76,9 @@ router.get('/products', async (req, res) => {
         nextPage,
         vacio: vacio,
     })
-})
+    })
 
-router.get('/users', async (req, res) => {
+router.get('/users', authentication, async (req, res) => {
     const {numPage=1, limit=10, query, sort} = req.query
     const opcionesPaginacion = {
         limit: limit,
@@ -85,7 +94,7 @@ router.get('/users', async (req, res) => {
     res.render('user', {users: docs, totalDocs, page, hasPrevPage, hasNextPage, prevPage, nextPage})
 })
 
-router.get('/carts/:cid', async (req, res) => {
+router.get('/carts/:cid', authentication, async (req, res) => {
     const {cid} = req.params
     const cartRender = await carts.getCartById(cid)
     const arrayNuevo = []

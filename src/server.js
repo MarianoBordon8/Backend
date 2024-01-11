@@ -1,14 +1,17 @@
 const express = require('express')
 const handlebars = require('express-handlebars')
+const cookieParser = require('cookie-parser')
+const session = require('express-session')
+//const FileStore = require('session-file-store')
+const MongoStore = require('connect-mongo')
 const productsRouter = require('./routes/apis/products.router.js')
 const cartRouter = require('./routes/apis/carts.router.js')
 const viewsRouter = require('./routes/views.router.js')
+const sessionsRouter = require('./routes/apis/sessions.router.js')
 const { Server } = require('socket.io')
 //const ProductManager = require('./daos/file/ProductManager.js')
 const { connectdb } = require('./config/index.js')
-//********
 const userRouter = require('./routes/apis/user.router.js')
-//********
 
 const { ProductMongo } = require('./daos/mongo/products.daomongo.js')
 const { MessageMongo } = require('./daos/mongo/message.daomongo.js')
@@ -24,6 +27,20 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(__dirname+'/public'))
 
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: 'mongodb+srv://MarianoBordon:Gabrielito2010.@cluster0.xgzgfd5.mongodb.net/ecommerce?retryWrites=true&w=majority',
+        mongoOptions: {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        },
+        ttl: 150000000,
+    }),
+    secret: 'secretCoder',
+    resave: true,
+    saveUninitialized: true
+}))
+
 app.engine('hbs', handlebars.engine({
     extname: '.hbs'
 }))
@@ -33,6 +50,7 @@ app.set('views', __dirname + '/views')
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartRouter)
 app.use('/views', viewsRouter)
+app.use('/api/sessions', sessionsRouter)
 //********
 app.use('/api/users', userRouter)
 //********
