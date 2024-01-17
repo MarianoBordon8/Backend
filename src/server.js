@@ -12,6 +12,9 @@ const { Server } = require('socket.io')
 //const ProductManager = require('./daos/file/ProductManager.js')
 const { connectdb } = require('./config/index.js')
 const userRouter = require('./routes/apis/user.router.js')
+const passport = require('passport')
+const { initializePassport } = require('./config/passport.config.js')
+
 
 const { ProductMongo } = require('./daos/mongo/products.daomongo.js')
 const { MessageMongo } = require('./daos/mongo/message.daomongo.js')
@@ -27,19 +30,27 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(__dirname+'/public'))
 
+
+initializePassport()
 app.use(session({
-    store: MongoStore.create({
-        mongoUrl: 'mongodb+srv://MarianoBordon:Gabrielito2010.@cluster0.xgzgfd5.mongodb.net/ecommerce?retryWrites=true&w=majority',
-        mongoOptions: {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        },
-        ttl: 150000000,
-    }),
-    secret: 'secretCoder',
+    secret: 'p@l@br@secret@',
     resave: true,
     saveUninitialized: true
 }))
+    //store: MongoStore.create({
+    //    mongoUrl: 'mongodb+srv://MarianoBordon:Gabrielito2010.@cluster0.xgzgfd5.mongodb.net/ecommerce?retryWrites=true&w=majority',
+    //    mongoOptions: {
+    //        useNewUrlParser: true,
+    //        useUnifiedTopology: true,
+    //    },
+    //    ttl: 150000000,
+    //}),
+    //secret: 'secretCoder',
+    //resave: true,
+    //saveUninitialized: true
+//}))
+app.use(passport.initialize())
+//app.use(passport.session())
 
 app.engine('hbs', handlebars.engine({
     extname: '.hbs'

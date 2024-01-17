@@ -4,46 +4,15 @@ class UserDaoMongo {
     constructor() {
         this.model = usersModel
     }
+    getUsersPaginate = async (limit=10, page=1) => await thism.model.paginate({}, {limit, page, lean: true})
 
-    getUsers = async () => {
-        try {
-            return await this.model.find()
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    getUsers = async () => await this.model.find({})
+    getUserBy = async (filter) => await this.model.findOne(filter)
+    getUsersByEmail = async (email) => await this.model.findOne({email: email})
+    addUsers = async (newUser) => await this.model.create(newUser)
+    updateUsers = async (uid, userUpdate) => await this.model.findOneAndUpdate({_id: uid}, userUpdate)
+    deleteUsersById = async (uid) => await this.model.findOneAndDelete({_id: uid})
 
-    getUsersByEmail = async (email) => {
-        try {
-            return await this.model.findOne({ email: email})
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    addUsers = async ({ first_name, last_name, email , password }) => {
-        try {
-            return await this.model.create({first_name, last_name, email , password})
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    updateUsers = async (uid, data) => {
-        try {
-            return await this.model.updateOne({_id: uid}, data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    deleteUsersById = async (uid) => {
-        try {
-            return await this.model.deleteOne({_id: uid})
-        } catch (error) {
-            console.log(error)
-        }
-    }
 }
 
 exports.UserMongo = UserDaoMongo
