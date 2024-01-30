@@ -22,11 +22,24 @@ const UsersSchema = Schema({
     },
     role: {
         type: String,
-        default: "user"
+        enum: ['user', 'user_premium', 'admin'],
+        default: 'user'
+    },
+    cart: {
+        type: Schema.Types.ObjectId,
+        ref: 'carts'
+    },
+    age:{
+        type: Number,
+        required: true
     }
 })
 
 UsersSchema.plugin(mongoosePaginate)
+
+UsersSchema.pre('findOne', function(){
+    this.populate('carts')
+})
 
 const usersModel = model(usersCollection, UsersSchema)
 

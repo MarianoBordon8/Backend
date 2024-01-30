@@ -4,8 +4,12 @@ const GithubStrategy = require('passport-github2')
 const UserDaoMongo = require('../daos/mongo/user.daomongo.js')
 const { UserMongo } = require('../daos/mongo/user.daomongo.js')
 const { createHash, isValidPassword } = require('../utils/hashpassword.js')
+const jwt = require('passport-jwt')
+const cookieParser = require('cookie-parser')
 
 const LocalStrategy = local.Strategy
+const JWTStrategy = jwt.Strategy
+const ExtractJWT  = jwt.ExtractJwt
 const userService   = new UserMongo()
 
 exports.initializePassport = () => {
@@ -80,4 +84,22 @@ exports.initializePassport = () => {
     //        return done(error)
     //    }
     //}))
+    const cookieExtractor = req => {
+        let token = null
+        if (req && req.cookies) {
+            token = req.cookies['token']
+        }
+        return token
+    }
+
+    passport.use('jwt', new JWTStrategy({
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+        secretOrKey: 'CoderSecretoJesonWebToken'
+    }, async (jwt_payload, done) => {
+        try {
+            return done(null, jwt_payload)
+        } catch (error) {
+            return done(error)
+        }
+    }))
 }

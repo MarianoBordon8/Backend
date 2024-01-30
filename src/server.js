@@ -31,24 +31,24 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static(__dirname+'/public'))
 
 
-initializePassport()
 app.use(session({
     secret: 'p@l@br@secret@',
     resave: true,
     saveUninitialized: true
 }))
-    //store: MongoStore.create({
+//store: MongoStore.create({
     //    mongoUrl: 'mongodb+srv://MarianoBordon:Gabrielito2010.@cluster0.xgzgfd5.mongodb.net/ecommerce?retryWrites=true&w=majority',
     //    mongoOptions: {
-    //        useNewUrlParser: true,
-    //        useUnifiedTopology: true,
-    //    },
-    //    ttl: 150000000,
-    //}),
+        //        useNewUrlParser: true,
+        //        useUnifiedTopology: true,
+        //    },
+        //    ttl: 150000000,
+        //}),
     //secret: 'secretCoder',
     //resave: true,
     //saveUninitialized: true
-//}))
+    //}))
+    initializePassport()
 app.use(passport.initialize())
 //app.use(passport.session())
 
@@ -57,6 +57,8 @@ app.engine('hbs', handlebars.engine({
 }))
 app.set('view engine', 'hbs')
 app.set('views', __dirname + '/views')
+
+app.use(cookieParser())
 
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartRouter)
