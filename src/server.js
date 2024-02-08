@@ -4,23 +4,17 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 //const FileStore = require('session-file-store')
 const MongoStore = require('connect-mongo')
-const productsRouter = require('./routes/apis/products.router.js')
-const cartRouter = require('./routes/apis/carts.router.js')
-const viewsRouter = require('./routes/views.router.js')
-const sessionsRouter = require('./routes/apis/sessions.router.js')
 const { Server } = require('socket.io')
 //const ProductManager = require('./daos/file/ProductManager.js')
-const { connectdb } = require('./config/index.js')
-const userRouter = require('./routes/apis/user.router.js')
+const { connectdb, configObject } = require('./config/index.js')
 const passport = require('passport')
 const { initializePassport } = require('./config/passport.config.js')
-
+const Approuter = require('./routes/index.js')
 
 const { ProductMongo } = require('./daos/mongo/products.daomongo.js')
 const { MessageMongo } = require('./daos/mongo/message.daomongo.js')
 
-const PORT = 8080 || process.env.PORT
-
+const PORT = configObject.PORT
 const app = express()
 
 connectdb()
@@ -29,6 +23,7 @@ connectdb()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(__dirname+'/public'))
+
 
 
 app.use(session({
@@ -60,13 +55,7 @@ app.set('views', __dirname + '/views')
 
 app.use(cookieParser())
 
-app.use('/api/products', productsRouter)
-app.use('/api/carts', cartRouter)
-app.use('/views', viewsRouter)
-app.use('/api/sessions', sessionsRouter)
-//********
-app.use('/api/users', userRouter)
-//********
+app.use(Approuter)
 
 const serverHttp = app.listen(PORT, () => {
     console.log('funciono')
