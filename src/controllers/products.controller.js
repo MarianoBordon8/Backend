@@ -1,9 +1,9 @@
-const { ProductMongo } = require('../daos/mongo/products.daomongo')
-//const ProductManager = require('../../daos/file/ProductManager.js')
+const { ProductsService } = require('../repositories/services')
+
 
 class ProductsController{
     constructor(){
-        this.productsService = new ProductMongo()
+        this.productsService = ProductsService
         //const productsServ = new ProductManager()
     }
 
@@ -29,8 +29,8 @@ class ProductsController{
 
     getProduct = async (req, res) => {
     const pid = req.params.pid
-    //const producto = await productsServ.getProductById(pid)
-    const producto = await this.productsService.getProductsById(pid)
+    //const producto = await productsServ.getBy(pid)
+    const producto = await this.productsService.getBy({_id: pid})
     if(producto){
         return res.json(producto)
     }else{
@@ -40,23 +40,23 @@ class ProductsController{
 
     createProduct = async (req, res) => {
         const cuerpo = req.body
-        //const mensaje = await productsServ.addProduct(cuerpo)
-        const mensaje = await this.productsService.addProduct(cuerpo)
+        //const mensaje = await productsServ.create(cuerpo)
+        const mensaje = await this.productsService.create(cuerpo)
         return res.send(mensaje)
     }
 
     updateProduct = async (req, res) => {
         const pid = req.params.pid
         const cuerpo = req.body
-        //const mensaje = await productsServ.updateProduct(pid, cuerpo)
-        const mensaje = await this.productsService.updateProduct(pid, cuerpo)
+        //const mensaje = await productsServ.update(pid, cuerpo)
+        const mensaje = await this.productsService.update({_id: pid}, cuerpo)
         return res.send(mensaje)
     }
 
     deleteProduct = async (req, res) => {
         const pid = req.params.pid
-        //const mensaje = await productsServ.deleteProduct(pid)
-        const mensaje = await this.productsService.deleteProduct(pid)
+        //const mensaje = await productsServ.delete(pid)
+        const mensaje = await this.productsService.delete({_id: pid})
         return res.send(mensaje)
     }
 }

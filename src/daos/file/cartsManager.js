@@ -7,7 +7,7 @@ class CartsManager {
         this.idCounter = 0
     }
 
-    getCarts = async () => {
+    gets = async () => {
         let obtainCards
         const Existe = fs.existsSync(this.path)
         if (!Existe) {
@@ -20,10 +20,10 @@ class CartsManager {
         return obtainCards
     }
 
-    getCartById = async (cid) => {
+    getBy = async (filter) => {
         cid = parseInt(cid)
-        const carts = await this.getCarts()
-        const cart = carts.find(cart => cart.id === cid)
+        const carts = await this.gets()
+        const cart = carts.find(cart => cart.id === filter)
         if (!cart) {
             return 'No se encuentro'
         }
@@ -31,8 +31,8 @@ class CartsManager {
     }
 
 
-    addCart = async () => {
-        const lectura = await this.getCarts()
+    create = async () => {
+        const lectura = await this.gets()
         const addId = lectura.length + 1
         const newCart = {
             id: addId,
@@ -48,12 +48,12 @@ class CartsManager {
     addProductToCart = async (cid, pid) => {
         cid = parseInt(cid)
         pid = parseInt(pid)
-        const carts = await this.getCarts()
+        const carts = await this.gets()
         const cartIndice = carts.findIndex(cart => cart.id === cid)
         if (cartIndice === -1) {
             return 'no se encuentro el carrito'
         }else{
-            const cartProducts = await this.getCartById(cid)
+            const cartProducts = await this.getBy(cid)
             const indice = cartProducts.findIndex(prod => prod.pid === pid)
             if(indice !== -1){
                 cartProducts[indice].cantidad = cartProducts[indice].cantidad + 1
@@ -65,6 +65,14 @@ class CartsManager {
             await fs.promises.writeFile(this.path, cartString)
             return 'se agrego el producto correctamente'
         }
+    }
+
+    update = async => {
+        console.log('update cart manager')
+    }
+
+    delete = async => {
+        console.log('delete cart manager')
     }
 }
 

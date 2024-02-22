@@ -5,6 +5,10 @@ const usersCollection = 'users'
 
 
 const UsersSchema = Schema({
+    fullname: {
+        type: String,
+        required: true
+    },
     first_name: {
         type: String,
         index: true,

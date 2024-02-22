@@ -1,16 +1,15 @@
-const { CartMongo } = require('../daos/mongo/cart.daomongo')
-//const CartsManager = require('../../daos/file/cartsManager.js')
+const { cartsService } = require('../repositories/services')
 
 
 class CartController{
     constructor(){
-        this.cartsService = new CartMongo()
+        this.cartsService = cartsService
     }
 
     getCart = async (req, res) => {
         const {cid} = req.params
         //const card = await cartServ.getCartById(cid)
-        const card = await this.cartsService.getCartById(cid)
+        const card = await this.cartsService.getBy({_id: cid})
         if(card){
             return res.send({
                 status: 'success',
@@ -24,7 +23,7 @@ class CartController{
     createCart = async (req, res) => {
         //const mensaje = await cartServ.addCart()
         const newCart = req.body
-        const mensaje = await this.cartsService.addCart(newCart)
+        const mensaje = await this.cartsService.create(newCart)
         //const mensaje = await cartModel.create(newCart)
         res.send(mensaje)
     }
@@ -42,7 +41,7 @@ class CartController{
     updateCart = async (req, res) => {
         const {cid} = req.params
         const data = req.body
-        const respuesta = await this.cartsService.updateCart(cid, data)
+        const respuesta = await this.cartsService.update(cid, data)
         res.send({
             status: 'success',
             payload: respuesta
@@ -61,7 +60,7 @@ class CartController{
 
     deleteCart = async (req, res) => {
         const {cid} = req.params
-        const respuesta = await this.cartsService.deleteCart(cid)
+        const respuesta = await this.cartsService.delete(cid)
         res.send({
             status: 'success',
             payload: respuesta

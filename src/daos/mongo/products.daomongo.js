@@ -5,7 +5,7 @@ class ProductDaoMongo {
         this.model = productModel
     }
 
-    getProducts = async (opcionesPaginacion) => {
+    get = async (opcionesPaginacion) => {
         try {
             //se usa para el /home
             //return await this.model.find({}).lean()
@@ -16,15 +16,15 @@ class ProductDaoMongo {
         }
     }
 
-    getProductsById = async (pid) => {
+    getBy = async (filter) => {
         try {
-            return await this.model.find({ _id: pid})
+            return await this.model.find(filter)
         } catch (error) {
             console.log(error)
         }
     }
 
-    addProduct = async ({ title, description, price, thumbnail , code, stock, categoria }) => {
+    create = async ({ title, description, price, thumbnail , code, stock, categoria }) => {
         try {
             if ( !title || !description || !price || !thumbnail || !code || !stock || !categoria) {
                 return 'ERROR: debe completar todos los campos'
@@ -52,17 +52,17 @@ class ProductDaoMongo {
         }
     }
 
-    updateProduct = async (pid, data) => {
+    update = async (filter, data) => {
         try {
-            return await this.model.updateOne({_id: pid}, data)
+            return await this.model.updateOne(filter, data)
         } catch (error) {
             console.log(error)
         }
     }
 
-    deleteProductById = async (pid) => {
+    delete = async (filter) => {
         try {
-            return await this.model.deleteOne({_id: pid})
+            return await this.model.deleteOne(filter)
         } catch (error) {
             console.log(error)
         }

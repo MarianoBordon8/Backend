@@ -1,14 +1,14 @@
-const { UserMongo } = require('../daos/mongo/user.daomongo')
+const { usersService } = require('../repositories/services')
 
 
 class UserController{
     constructor(){
-        this.userService = new UserMongo
+        this.userService = usersService
     }
 
     getUsers = async (req, res) =>{
         try {
-            const users = await this.userService.getUsersPaginate()
+            const users = await this.userService.getP()
             res.send(users)
 
         } catch (error) {
@@ -19,9 +19,8 @@ class UserController{
     createUsers = async (req, res) =>{
         try {
             const {first_name, last_name, email} = req.body
-            const result = await this.userService.addUsers({first_name,
-                last_name,
-                email})
+            const newUser = {first_name, last_name, email}
+            const result = await this.userService.create(newUser)
             res.status(201).send({
                 status: 'success',
                 payload: result
@@ -35,7 +34,7 @@ class UserController{
 
         const { uid } = req.params
         const userToReplace = req.body
-        const result = await this.userService.updateUsers({_id: uid}, userToReplace)
+        const result = await this.userService.update({_id: uid}, userToReplace)
         res.status(201).send({
             status: 'success',
             payload: result
@@ -45,7 +44,7 @@ class UserController{
     deleteUsers = async  (req, res)=> {
         const { uid } = req.params
 
-        const result = await this.userService.deleteUsersById({_id: uid})
+        const result = await this.userService.delete({_id: uid})
         res.status(200).send({
             status: "success",
             payload: result

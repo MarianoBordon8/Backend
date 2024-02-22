@@ -15,6 +15,7 @@ dotenv.config({
 const configObject = {
     PORT: process.env.PORT || 4000,
     mongo_url: process.env.MONGO_URL,
+    persistence: process.env.PERSISTENCE,
     jwt_secret_key: process.env.JWT_SECRET_KEY,
     gh_client_id: '',
     gh_client_secret: ''

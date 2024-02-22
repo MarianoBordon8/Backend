@@ -10,6 +10,7 @@ const { connectdb, configObject } = require('./config/index.js')
 const passport = require('passport')
 const { initializePassport } = require('./config/passport.config.js')
 const Approuter = require('./routes/index.js')
+const cors = require('cors')
 
 const { ProductMongo } = require('./daos/mongo/products.daomongo.js')
 const { MessageMongo } = require('./daos/mongo/message.daomongo.js')
@@ -23,7 +24,7 @@ connectdb()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(__dirname+'/public'))
-
+app.use(cors())
 
 
 app.use(session({

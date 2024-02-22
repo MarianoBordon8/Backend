@@ -7,7 +7,7 @@ class ProductManager{
         this.path = './src/productos.txt'
         this.idAgregar = 1
     }
-    async getProducts(){
+    async get(){
         let obtainProducts
         const Existe = fs.existsSync(this.path)
         if (!Existe) {
@@ -20,7 +20,7 @@ class ProductManager{
         return obtainProducts
     }
 
-    async addProduct({title, description, price, thumbnail, code, stock}){
+    async create({title, description, price, thumbnail, code, stock}){
         if (!title || !description || !price || !thumbnail || !code || !stock){
             return ('faltan campos')
         }else{
@@ -46,22 +46,22 @@ class ProductManager{
             }
         }
     }
-    async getProductById(id){
+    async getBy(filter){
         let leerProductos = []
-        leerProductos = await this.getProducts()
-        const producto = leerProductos.find((prod) => prod.id === id)
+        leerProductos = await this.get()
+        const producto = leerProductos.find((prod) => prod.id === filter)
         return(producto)
     }
 
-    async deleteProduct (id) {
+    async delete (filter) {
         let obtainProducts = await fs.promises.readFile(this.path, 'utf-8')
         obtainProducts = JSON.parse(obtainProducts)
-        const i = obtainProducts.findIndex(elm => elm.id===id)
+        const i = obtainProducts.findIndex(elm => elm.id===filter)
 
         if (i === -1) {
             return 'Producto no encontrado'
         } else {
-            const newProducts = obtainProducts.filter((produc) => produc.id != id)
+            const newProducts = obtainProducts.filter((produc) => produc.id != filter)
             this.products = newProducts
             const jsonProduct = JSON.stringify(newProducts, null, 2)
             await fs.promises.writeFile(this.path, jsonProduct)
@@ -69,13 +69,13 @@ class ProductManager{
         }
     }
 
-    async updateProduct(id, data) {
+    async update(filter, data) {
         let obtainProducts = await fs.promises.readFile(this.path, 'utf-8')
         obtainProducts = JSON.parse(obtainProducts)
-        let indice = obtainProducts.findIndex(prod => prod.id === parseInt(id))
+        let indice = obtainProducts.findIndex(prod => prod.id === parseInt(filter))
 
         if (indice !== -1) {
-            obtainProducts[indice] = { ...obtainProducts[indice], ...data, id }
+            obtainProducts[indice] = { ...obtainProducts[indice], ...data, filter }
             const productoString = JSON.stringify(obtainProducts, null, 2)
             await fs.promises.writeFile(this.path, productoString)
             this.products = obtainProducts

@@ -5,7 +5,7 @@ class CartDaoMongo {
         this.model = cartModel
     }
 
-    async addCart(newCart) {
+    async create(newCart) {
         try {
             return await this.model.create(newCart)
         } catch (error) {
@@ -13,7 +13,7 @@ class CartDaoMongo {
         }
     }
 
-    async getCarts() {
+    async gets() {
         try {
             return await this.model.find({})
         } catch (error) {
@@ -21,9 +21,9 @@ class CartDaoMongo {
         }
     }
 
-    async getCartById( cid ) {
+    async getBy( filter ) {
         try {
-            return await this.model.findOne({_id: cid })
+            return await this.model.findOne(filter)
         } catch (error) {
             console.log(error)
         }
@@ -31,7 +31,7 @@ class CartDaoMongo {
 
     async addProductToCart(cid, pid) {
         try {
-            const Cart = await this.getCartById(cid)
+            const Cart = await this.getBy({_id: cid})
             const newCart = {...Cart._doc}
             const i = newCart.products.findIndex((elm) => elm._id === pid)
 
@@ -75,7 +75,7 @@ class CartDaoMongo {
         }
     }
 
-    async updateCart(cid, data) {
+    async update(cid, data) {
         try {
             await this.model.updateOne(
                 { _id: cid},
@@ -85,7 +85,7 @@ class CartDaoMongo {
             console.log(error)
         }
     }
-    async deleteCart(cid) {
+    async delete(cid) {
         try {
             await this.model.updateOne(
                 { _id: cid },
