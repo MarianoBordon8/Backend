@@ -1,16 +1,12 @@
 const passport = require('passport')
-const local    = require('passport-local')
 const GithubStrategy = require('passport-github2')
-const UserDaoMongo = require('../daos/mongo/user.daomongo.js')
-const { UserMongo } = require('../daos/mongo/user.daomongo.js')
-const { createHash, isValidPassword } = require('../utils/hashpassword.js')
 const jwt = require('passport-jwt')
-const cookieParser = require('cookie-parser')
+const UserDaoMongo = require('../daos/mongo/user.daomongo.js')
 
-const LocalStrategy = local.Strategy
 const JWTStrategy = jwt.Strategy
 const ExtractJWT  = jwt.ExtractJwt
-const userService   = new UserMongo()
+const userService   = new UserDaoMongo()
+
 
 exports.initializePassport = () => {
     passport.use('github', new GithubStrategy({
@@ -38,27 +34,6 @@ exports.initializePassport = () => {
         }
     }))
 
-    //passport.use('register', new LocalStrategy({
-    //    passReqToCallback: true,
-    //    usernameField: 'email'
-    //}, async (req, username, password, done) => {
-    //    try{
-    //        const {first_name, last_name } = req.body
-    //        let userFound = await userService.getUsersByEmail(username)
-    //        if (userFound) return done(null, false)
-//
-    //        let newUser = {
-    //            first_name,
-    //            last_name,
-    //            email: username,
-    //            password: createHash(password)
-    //        }
-    //        let result = await userService.addUsers(newUser)
-    //        return done(null, result)
-    //    } catch (error) {
-    //        return done('error al crear un usuario' + error)
-    //    }
-    //}))
 
     passport.serializeUser((user, done)=>{
         done(null, user.id)
@@ -68,22 +43,6 @@ exports.initializePassport = () => {
         done(null, user)
     })
 
-    //passport.use('login', new LocalStrategy({
-    //    usernameField: 'email'
-    //}, async (username, password, done)=>{
-    //    try {
-    //        const user = await userService.geUsertBy({email: username})
-    //        if(!user) {
-    //            console.log('User not found')
-    //            return done(null, false)
-    //        }
-//
-    //        if(!isValidPassword(password, {password: user.password})) return done(null, false)
-    //        return done(null, user)
-    //    } catch (error) {
-    //        return done(error)
-    //    }
-    //}))
     const cookieExtractor = req => {
         let token = null
         if (req && req.cookies) {

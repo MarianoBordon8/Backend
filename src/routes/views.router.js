@@ -1,14 +1,14 @@
 const { Router } = require('express')
-//const ProductManager = require('../daos/file/ProductManager.js')
-const { ProductMongo } = require('../daos/mongo/products.daomongo')
-const { CartMongo } = require('../daos/mongo/cart.daomongo')
 const { usersModel } = require('../models/users.model.js')
 const { authentication } = require('../middleware/auth.middleware.js')
+const CartDaoMongo = require('../daos/mongo/Cart.daomongo.js')
+const ProductDaoMongo = require('../daos/mongo/products.daomongo')
 
 const router = Router()
-//const productsServ = new ProductManager()
-const products = new ProductMongo()
-const carts = new CartMongo()
+const products = new ProductDaoMongo()
+
+const carts = new CartDaoMongo()
+
 
 router.get('/register', async (req, res) =>{
     res.render('register.hbs', {})
@@ -45,7 +45,6 @@ router.get('/chat', async (req, res) => {
 })
 
 router.get('/products', async (req, res) => {
-    //const products = await productsServ.getProducts()
     const {numPage=1, limit=4, query, sort} = req.query
     const opcionesPaginacion = {
         limit: limit,

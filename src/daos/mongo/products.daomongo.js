@@ -7,9 +7,6 @@ class ProductDaoMongo {
 
     get = async (opcionesPaginacion) => {
         try {
-            //se usa para el /home
-            //return await this.model.find({}).lean()
-            //se usa para el /products
             return await this.model.paginate({}, opcionesPaginacion)
         } catch (error) {
             console.log(error)
@@ -69,4 +66,4 @@ class ProductDaoMongo {
     }
 }
 
-exports.ProductMongo = ProductDaoMongo
+module.exports = ProductDaoMongo

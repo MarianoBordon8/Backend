@@ -18,7 +18,12 @@ const configObject = {
     persistence: process.env.PERSISTENCE,
     jwt_secret_key: process.env.JWT_SECRET_KEY,
     gh_client_id: '',
-    gh_client_secret: ''
+    gh_client_secret: '',
+    gmail_user_app: process.env.GMAIL_USER_APP,
+    gmail_pass_app: process.env.GMAIL_PASS_APP,
+    twilio_account_sid: process.env.TWILIO_ACCOUNT_SID,
+    twilio_atuh_token: process.env.TWILIO_ATUH_TOKEN,
+    twilio_number_phone: process.env.TWILIO_NUMBER_PHONE
 }
 
 const connectdb = async () => {

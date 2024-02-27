@@ -4,11 +4,9 @@ const { ProductsService } = require('../repositories/services')
 class ProductsController{
     constructor(){
         this.productsService = ProductsService
-        //const productsServ = new ProductManager()
     }
 
     getProducts = async (req, res) => {
-        //const productos = await productsServ.getProducts()
         const productos = await this.productsService.getProducts()
         const limit = req.query.limit
         if(productos.length !== 0){
@@ -29,8 +27,7 @@ class ProductsController{
 
     getProduct = async (req, res) => {
     const pid = req.params.pid
-    //const producto = await productsServ.getBy(pid)
-    const producto = await this.productsService.getBy({_id: pid})
+    const producto = await this.productsService.getProduct({_id: pid})
     if(producto){
         return res.json(producto)
     }else{
@@ -40,23 +37,20 @@ class ProductsController{
 
     createProduct = async (req, res) => {
         const cuerpo = req.body
-        //const mensaje = await productsServ.create(cuerpo)
-        const mensaje = await this.productsService.create(cuerpo)
+        const mensaje = await this.productsService.createProduct(cuerpo)
         return res.send(mensaje)
     }
 
     updateProduct = async (req, res) => {
         const pid = req.params.pid
         const cuerpo = req.body
-        //const mensaje = await productsServ.update(pid, cuerpo)
-        const mensaje = await this.productsService.update({_id: pid}, cuerpo)
+        const mensaje = await this.productsService.updateProduct({_id: pid}, cuerpo)
         return res.send(mensaje)
     }
 
     deleteProduct = async (req, res) => {
         const pid = req.params.pid
-        //const mensaje = await productsServ.delete(pid)
-        const mensaje = await this.productsService.delete({_id: pid})
+        const mensaje = await this.productsService.deleteProduct({_id: pid})
         return res.send(mensaje)
     }
 }

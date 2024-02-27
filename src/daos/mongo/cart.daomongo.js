@@ -97,4 +97,4 @@ class CartDaoMongo {
     }
 }
 
-exports.CartMongo = CartDaoMongo
+module.exports = CartDaoMongo
