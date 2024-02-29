@@ -7,7 +7,6 @@ const usersCollection = 'users'
 const UsersSchema = Schema({
     fullname: {
         type: String,
-        required: true
     },
     first_name: {
         type: String,
@@ -42,7 +41,7 @@ const UsersSchema = Schema({
 UsersSchema.plugin(mongoosePaginate)
 
 UsersSchema.pre('findOne', function(){
-    this.populate('carts')
+    this.populate('cart')
 })
 
 const usersModel = model(usersCollection, UsersSchema)

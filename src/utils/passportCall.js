@@ -10,4 +10,4 @@ exports.passportCall = strategy => {
             next()
         })(req, res, next)
     }
-}   
+}

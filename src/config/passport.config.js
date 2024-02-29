@@ -8,6 +8,7 @@ const ExtractJWT  = jwt.ExtractJwt
 const userService   = new UserDaoMongo()
 
 
+
 exports.initializePassport = () => {
     passport.use('github', new GithubStrategy({
         clientID: 'Iv1.a91e913153a90c89',
@@ -15,7 +16,7 @@ exports.initializePassport = () => {
         callbackURL: 'http://localhost:8080/api/sessions/githubcallback'
     }, async (accesToken, refreshToken, profile, done)=> {
         try {
-            let user = await userService.getUserBy({email: profile._json.email})
+            let user = await userService.getBy({email: profile._json.email})
             if (!user) {
                 console.log(profile)
                 let userNew = {
@@ -24,7 +25,7 @@ exports.initializePassport = () => {
                     email: profile.email,
                     password: '123456'
                 }
-                let result = await userService.addUsers(userNew)
+                let result = await userService.create(userNew)
                 return done(null, result)
             }
             done(null, user)
@@ -39,7 +40,7 @@ exports.initializePassport = () => {
         done(null, user.id)
     })
     passport.deserializeUser(async (id, done)=>{
-        let user = await userService.geUsertBy({_id: id})
+        let user = await userService.getBy({_id: id})
         done(null, user)
     })
 

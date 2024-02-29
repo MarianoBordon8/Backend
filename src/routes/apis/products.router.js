@@ -5,7 +5,8 @@ const {
     getProduct,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    generateProduct
 } = new ProductsController()
 
 const router = Router()
@@ -20,5 +21,7 @@ router.post('/', createProduct)
 router.put('/:pid', updateProduct)
 
 router.delete('/:pid', deleteProduct)
+
+router.delete('/mockingproducts', generateProduct)
 
 module.exports = router

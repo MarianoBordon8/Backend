@@ -7,6 +7,7 @@ class UserRepository{
     }
 
     getUsers = async () => await this.dao.get()
+    getUsersBy = async (filter) => await this.dao.getBy(filter)
     createUsers = async (newUser)=> {
         const newUserDto = new userDto(newUser)
         return await this.dao.create(newUser)

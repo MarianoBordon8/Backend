@@ -11,6 +11,7 @@ const cors = require('cors')
 
 const { MessageMongo } = require('./daos/mongo/message.daomongo.js')
 const ProductDaoMongo = require('./daos/mongo/products.daomongo.js')
+const { handleError } = require('./middleware/error/handleError.js')
 
 const PORT = configObject.PORT
 const app = express()
@@ -36,12 +37,14 @@ app.use(passport.initialize())
 app.engine('hbs', handlebars.engine({
     extname: '.hbs'
 }))
+
 app.set('view engine', 'hbs')
 app.set('views', __dirname + '/views')
 
 app.use(cookieParser())
 
 app.use(Approuter)
+app.use(handleError)
 
 const serverHttp = app.listen(PORT, () => {
     console.log('funciono')

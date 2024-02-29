@@ -3,16 +3,16 @@
     {{#if vacio}}
         {{#each carrito}}
             <div>
-                <p>Imagen {{this.thumbnail}} </p>
-                <h2>Nombre del producto: {{ this.title }}</h2>
-                <p>Descripcion: {{ this.description }}</p>
-                <h3>Precio: {{ this.price }}</h3>
-                <p>stock: {{ this.stock }}</p>
-                <p>Descripcion del producto: {{ this.description }}</p>
+                <p>Imagen {{this.product.thumbnail}} </p>
+                <h2>Nombre del producto: {{ this.product.title }}</h2>
+                <p>Descripcion: {{ this.product.description }}</p>
+                <h3>Precio: {{ this.product.price }}</h3>
+                <p>stock: {{ this.product.stock }}</p>
+                <p>Descripcion del producto: {{ this.product.description }}</p>
                 <hr>
             </div>
         {{/each}}
     {{else}}
-        <h2>No tienes productos</h1>
+        <h2>No tienes productos</h2>
     {{/if}}
 </div>

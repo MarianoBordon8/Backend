@@ -21,7 +21,7 @@ router.get('/login', async (req, res) =>{
 
 
 router.get('/', async (req, res) =>{
-    const productos = await products.getProducts()
+    const productos = await products.get()
     let vacio = true
     if(productos.length === 0){
         vacio = false
@@ -57,7 +57,7 @@ router.get('/products', async (req, res) => {
     }
     const {
         docs, totalDocs, page, hasPrevPage, hasNextPage, prevPage, nextPage
-    } = await products.getProducts(opcionesPaginacion)
+    } = await products.get(opcionesPaginacion)
     let vacio = true
     if(docs.length === 0){
         vacio = false
@@ -95,15 +95,12 @@ router.get('/users', authentication, async (req, res) => {
 
 router.get('/carts/:cid', authentication, async (req, res) => {
     const {cid} = req.params
-    const cartRender = await carts.getCartById(cid)
+    const cartRender = await carts.getBy({_id: cid})
     const arrayNuevo = []
 
     for (let i = 0; i <= (cartRender.products.length - 1); i++) {
         arrayNuevo.push(cartRender.products[i])
     }
-    console.log(arrayNuevo)
-    console.log(cartRender.products.length)
-
 
     res.render('cartsByID', {
         carrito: arrayNuevo,

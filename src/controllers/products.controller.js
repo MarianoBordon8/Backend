@@ -1,3 +1,4 @@
+const { faker } = require('@faker-js/faker')
 const { ProductsService } = require('../repositories/services')
 
 
@@ -52,6 +53,23 @@ class ProductsController{
         const pid = req.params.pid
         const mensaje = await this.productsService.deleteProduct({_id: pid})
         return res.send(mensaje)
+    }
+
+    generateProduct = () => {
+        let productsM = []
+        for (let i = 0; i < 100; i++) {
+            productsM.puch({
+                title: faker.commerce.productName(),
+                description: faker.commerce.productDescription(),
+                status: true,
+                price: faker.commerce.price(),
+                code: `codigo${i}`,
+                stock: faker.string.numeric(),
+                thumbnail: faker.image.url(),
+                id: faker.database.mongodbObjectId()
+            })
+        }
+        return res.send({status: 'sucess', payload: productsM})
     }
 }
 
