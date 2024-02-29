@@ -15,4 +15,3 @@ class UserDaoMongo {
 }
 
 module.exports = UserDaoMongo
-//exports.UserMongo = UserDaoMongo

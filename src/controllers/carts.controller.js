@@ -1,5 +1,9 @@
 const { ticketModel } = require('../models/ticket.model')
 const { cartsService, ProductsService } = require('../repositories/services')
+const CustomError = require('../services/errors/CustomError')
+const { Errors } = require('../services/errors/enums')
+const {generateCartErrorInfo, generateCartRemoveErrorInfo} = require('../services/errors/info')
+
 
 
 class CartController{
@@ -10,73 +14,113 @@ class CartController{
     }
 
     getCart = async (req, res) => {
-        const {cid} = req.params
-        //const card = await cartServ.getCartById(cid)
-        const card = await this.cartsService.getCart({_id: cid})
-        if(card){
-            return res.send({
-                status: 'success',
-                payload: card
-            })
-        }else{
-            return res.status(400).send(`no se encontro el producto de id ${cid}`)
+        try {
+            const {cid} = req.params
+            const card = await this.cartsService.getCart({_id: cid})
+            if(card){
+                return res.send({
+                    status: 'success',
+                    payload: card
+                })
+            }else{
+                return res.status(400).send(`no se encontro el producto de id ${cid}`)
+            }
+        } catch (error) {
+            next(error)
         }
     }
 
     createCart = async (req, res) => {
-        //const mensaje = await cartServ.addCart()
-        const newCart = req.body
-        const mensaje = await this.cartsService.createCart(newCart)
-        //const mensaje = await cartModel.create(newCart)
-        res.send(mensaje)
+        try {
+            const newCart = req.body
+            const mensaje = await this.cartsService.createCart(newCart)
+            res.send(mensaje)
+        } catch (error) {
+            next(error)
+        }
     }
 
     createProductByCart = async (req, res) => {
-        const {cid, pid} = req.params
-        //const respuesta = await cartServ.addProductToCart(cid, pid)
-        const respuesta = await this.cartsService.createProductByCart(cid, pid)
-        res.send({
-            status: 'success',
-            payload: respuesta
-        })
+        try {
+            const {cid, pid} = req.params
+            if (!cid || !pid) {
+                CustomError.createError({
+                    name: 'Add product to cart error',
+                    cause: generateCartErrorInfo(cid, pid),
+                    message: 'Error trying add product to cart',
+                    code: Errors.DATABASES_ERROR
+                })
+            }
+            const respuesta = await this.cartsService.createProductByCart(cid, pid)
+            res.send({
+                status: 'success',
+                payload: respuesta
+            })
+        } catch (error) {
+            next(error)
+        }
     }
 
     updateCart = async (req, res) => {
-        const {cid} = req.params
-        const data = req.body
-        const respuesta = await this.cartsService.updateCart(cid, data)
-        res.send({
-            status: 'success',
-            payload: respuesta
-        })
+        try {
+            const {cid} = req.params
+            const data = req.body
+            const respuesta = await this.cartsService.updateCart(cid, data)
+            res.send({
+                status: 'success',
+                payload: respuesta
+            })
+        } catch (error) {
+            next(error)
+        }
     }
-    
+
     updateProductByCart = async (req, res) => {
-        const {cid, pid} = req.params
-        const newCantidad = req.body
-        const respuesta = await this.cartsService.updateProductByCart(cid, pid, newCantidad)
-        res.send({
-            status: 'success',
-            payload: respuesta
-        })
+        try {
+            const {cid, pid} = req.params
+            const newCantidad = req.body
+            const respuesta = await this.cartsService.updateProductByCart(cid, pid, newCantidad)
+            res.send({
+                status: 'success',
+                payload: respuesta
+            })
+        } catch (error) {
+            next(error)
+        }
     }
 
     deleteCart = async (req, res) => {
-        const {cid} = req.params
-        const respuesta = await this.cartsService.deleteCart(cid)
-        res.send({
-            status: 'success',
-            payload: respuesta
-        })
+        try {
+            const {cid} = req.params
+            const respuesta = await this.cartsService.deleteCart(cid)
+            res.send({
+                status: 'success',
+                payload: respuesta
+            })
+        } catch (error) {
+            next(error)
+        }
     }
 
     deleteProductByCart = async (req, res) => {
-        const {cid, pid} = req.params
-        const respuesta = await this.cartsService.deleteProductByCart(cid, pid)
-        res.send({
-            status: 'success',
-            payload: respuesta
-        })
+        try {
+            const {cid, pid} = req.params
+            if(!cid || !pid){
+                CustomError.createError({
+                    name: 'Error to remove product from cart',
+                    cause: generateCartRemoveErrorInfo(cid, pid),
+                    message: 'Cant remove product from cart',
+                    code: Errors.DATABASES_ERROR
+                })
+            }
+            const respuesta = await this.cartsService.deleteProductByCart(cid, pid)
+            res.send({
+                status: 'success',
+                payload: respuesta
+            })
+        } catch (error) {
+            next(error)
+        }
     }
 
     purchaseCart = async (req, res) => {

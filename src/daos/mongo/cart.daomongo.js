@@ -1,4 +1,6 @@
 const { cartModel } = require("../../models/carts.model.js")
+const CustomError = require("../../services/errors/CustomError.js")
+const { Errors } = require("../../services/errors/enums.js")
 
 class CartDaoMongo {
     constructor() {
@@ -31,6 +33,13 @@ class CartDaoMongo {
 
     async addProductToCart(cid, pid) {
         try {
+            if (!user || !user.cart) {
+                CustomError.createError({
+                    name: 'Add product to cart error',
+                    cause: generateCartErrorInfo(user, cid),
+                    message: 'Error trying add product to cart',
+                    code: Errors.DATABASES_ERROR
+                })}
             const Cart = await this.getBy({_id: cid})
             const newCart = {...Cart._doc}
             const i = newCart.products.findIndex((elm) => elm._id === pid)
@@ -52,6 +61,14 @@ class CartDaoMongo {
 
     async deleteProductByCart(cid, pid) {
         try {
+            if(!cid || !pid){
+                CustomError.createError({
+                    name: 'Error to remove product from cart',
+                    cause: generateCartRemoveErrorInfo(cid, pid),
+                    message: 'Cant remove product from cart',
+                    code: Errors.DATABASES_ERROR
+                })
+            }
             await this.model.updateOne(
                 { _id: cid },
                 { $pull: {

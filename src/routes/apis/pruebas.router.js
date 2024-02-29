@@ -78,9 +78,9 @@ router.get('/users', (req, res) => {
 
 router.use(compression())
 router.get('/compresion', (req, res) =>{
-    let string = 'Hola Nito es un CRACK***'
+    let string = 'Hola esto es un texto de prueba***'
     for (let i = 0; i < 5e4; i++) {
-        string += 'Hola Nito es un CRACK***'
+        string += 'Hola esto es un texto de prueba***'
     }
 
     res.send(string)

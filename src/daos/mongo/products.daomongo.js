@@ -1,3 +1,4 @@
+const { faker } = require('@faker-js/faker')
 const { productModel } = require('../../models/products.model')
 
 class ProductDaoMongo {
@@ -63,6 +64,23 @@ class ProductDaoMongo {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    mock = () => {
+        let productsM = []
+        for (let i = 0; i < 100; i++) {
+            productsM.push({
+                title: faker.commerce.productName(),
+                description: faker.commerce.productDescription(),
+                status: true,
+                price: faker.commerce.price(),
+                code: `codigo${i}`,
+                stock: faker.string.numeric(),
+                thumbnail: faker.image.url(),
+                id: faker.database.mongodbObjectId()
+            })
+        }
+        return productsM
     }
 }
 

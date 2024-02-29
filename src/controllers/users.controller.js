@@ -52,24 +52,38 @@ class UserController{
     }
 
     updateUsers = async (req, res) =>{
-
-        const { uid } = req.params
-        const userToReplace = req.body
-        const result = await this.userService.updateUsers({_id: uid}, userToReplace)
-        res.status(201).send({
-            status: 'success',
-            payload: result
-        })
+        try {
+            const { uid } = req.params
+            const {first_name, last_name, email} = req.body
+            if(!first_name || !last_name || !email){
+                CustomError.createError({
+                name: 'user reation error',
+                cause: generateUserErrorInfo(newUser),
+                message: 'Error probando la creacion del usuario',
+                code: Errors.INVALID_TYPES
+                })
+            }
+                const result = await this.userService.updateUsers({_id: uid}, {first_name, last_name, email})
+                res.status(201).send({
+                    status: 'success',
+                    payload: result
+            })
+        } catch (error) {
+            next(error)
+        }
     }
 
     deleteUsers = async  (req, res)=> {
-        const { uid } = req.params
-
-        const result = await this.userService.deleteUsers({_id: uid})
-        res.status(200).send({
-            status: "success",
-            payload: result
-        })
+        try {
+            const { uid } = req.params
+            const result = await this.userService.deleteUsers({_id: uid})
+            res.status(200).send({
+                status: "success",
+                payload: result
+            })
+        } catch (error) {
+            next(error)
+        }
     }
 }
 
