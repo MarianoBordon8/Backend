@@ -1,4 +1,5 @@
 const fs = require('fs')
+const { logger } = require('../../utils/logger')
 
 class CartsManager {
     constructor(){
@@ -68,11 +69,11 @@ class CartsManager {
     }
 
     update = async => {
-        console.log('update cart manager')
+        logger.info('update cart manager')
     }
 
     delete = async => {
-        console.log('delete cart manager')
+        logger.info('delete cart manager')
     }
 }
 

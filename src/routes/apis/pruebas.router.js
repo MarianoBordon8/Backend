@@ -3,6 +3,7 @@ const { sendMail } = require('../../utils/sendMail')
 //const { sendSms } = require('../../utils/sendSms')
 const { faker } = require('@faker-js/faker')
 const compression = require('express-compression')
+const { logger } = require('../../utils/logger')
 
 
 
@@ -85,5 +86,17 @@ router.get('/compresion', (req, res) =>{
 
     res.send(string)
 })
+
+router.get('/logger', (req, res) => {
+    req.logger.debug('Debug message')
+    req.logger.http('HTTP message')
+    req.logger.info('Info message')
+    req.logger.warn('Warning message')
+    req.logger.error('Error message')
+    req.logger.fatal('Fatal message')
+    res.send('Logging test completed')
+})
+
+
 
 module.exports = router

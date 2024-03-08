@@ -1,4 +1,5 @@
 const { Command } = require('commander')
+const { logger } = require('./logger')
 
 const program = new Command()
 
@@ -11,5 +12,5 @@ program
     
 program.parse()
 
-console.log('option: ', program.opts())
-console.log('ARgument: ', program.args)
+logger.info('option: ', program.opts())
+logger.info('ARgument: ', program.args)

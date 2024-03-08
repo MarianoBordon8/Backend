@@ -1,9 +1,10 @@
 const { Errors } = require("../../services/errors/enums");
+const { logger } = require("../../utils/logger");
 
 exports.handleError = (err, req, res, next) => {
     switch (err.code) {
         case Errors.INVALID_TYPES:
-            console.log(err)
+            logger.error(err)
             return res.status(400).send({status: 'error', error: err.mesagge})
             break;
     

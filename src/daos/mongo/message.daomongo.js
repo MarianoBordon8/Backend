@@ -1,4 +1,5 @@
 const { messageModel} = require('../../models/messages.model.js')
+const { logger } = require('../../utils/logger.js')
 
 class MessageDaoMongo {
     constructor (){
@@ -14,7 +15,7 @@ class MessageDaoMongo {
         try {
             return await this.model.find({})
         } catch (error) {
-            console.log(error)
+            logger.error(error)
         }
     }
 }

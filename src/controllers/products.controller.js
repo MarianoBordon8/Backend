@@ -10,7 +10,7 @@ class ProductsController{
         this.productsService = ProductsService
     }
 
-    getProducts = async (req, res) => {
+    getProducts = async (req, res, next) => {
         try {
             const productos = await this.productsService.getProducts()
             const limit = req.query.limit
@@ -33,7 +33,7 @@ class ProductsController{
         }
     }
 
-    getProduct = async (req, res) => {
+    getProduct = async (req, res, next) => {
         try {
             const pid = req.params.pid
             const producto = await this.productsService.getProduct({_id: pid})
@@ -55,7 +55,7 @@ class ProductsController{
         }
     }
 
-    createProduct = async (req, res) => {
+    createProduct = async (req, res, next) => {
         try {
             const cuerpo = req.body
             if(!cuerpo.title || !cuerpo.price || !cuerpo.code || !cuerpo.stock){
@@ -73,7 +73,7 @@ class ProductsController{
         }
     }
 
-    updateProduct = async (req, res) => {
+    updateProduct = async (req, res, next) => {
         try {
             const pid = req.params.pid
             const cuerpo = req.body
@@ -93,7 +93,7 @@ class ProductsController{
 
 
 
-    deleteProduct = async (req, res) => {
+    deleteProduct = async (req, res, next) => {
         try {
             const pid = req.params.pid
             const mensaje = await this.productsService.deleteProduct({_id: pid})
@@ -103,7 +103,7 @@ class ProductsController{
         }
     }
 
-    generateProduct = async (req, res) => {
+    generateProduct = async (req, res, next) => {
         try {
             const productsMock = await this.productsService.mock()
             return res.send(productsMock)

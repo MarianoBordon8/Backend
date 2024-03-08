@@ -3,6 +3,7 @@ const { usersModel } = require('../models/users.model.js')
 const { authentication } = require('../middleware/auth.middleware.js')
 const CartDaoMongo = require('../daos/mongo/Cart.daomongo.js')
 const ProductDaoMongo = require('../daos/mongo/products.daomongo')
+const { logger } = require('../utils/logger.js')
 
 const router = Router()
 const products = new ProductDaoMongo()
@@ -62,7 +63,7 @@ router.get('/products', async (req, res) => {
     if(docs.length === 0){
         vacio = false
     }
-    console.log(typeof(docs))
+    logger.info(typeof(docs))
     res.render('products.hbs', {
         limit,
         sort,

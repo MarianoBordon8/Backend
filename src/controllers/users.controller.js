@@ -2,6 +2,7 @@ const { usersService } = require('../repositories/services')
 const CustomError = require('../services/errors/CustomError')
 const { Errors } = require('../services/errors/enums')
 const { generateUserErrorInfo } = require('../services/errors/info')
+const { logger } = require('../utils/logger')
 
 
 class UserController{
@@ -15,7 +16,7 @@ class UserController{
             res.send(users)
 
         } catch (error) {
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -25,7 +26,7 @@ class UserController{
             res.send(users)
 
         } catch (error) {
-            console.log(error)
+            logger.error(error)
         }
     }
 
@@ -51,7 +52,7 @@ class UserController{
         }
     }
 
-    updateUsers = async (req, res) =>{
+    updateUsers = async (req, res, next) =>{
         try {
             const { uid } = req.params
             const {first_name, last_name, email} = req.body
@@ -82,7 +83,7 @@ class UserController{
                 payload: result
             })
         } catch (error) {
-            next(error)
+            logger.error(error)
         }
     }
 }

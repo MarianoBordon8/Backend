@@ -2,6 +2,7 @@ const passport = require('passport')
 const GithubStrategy = require('passport-github2')
 const jwt = require('passport-jwt')
 const UserDaoMongo = require('../daos/mongo/user.daomongo.js')
+const { logger } = require('../utils/logger.js')
 
 const JWTStrategy = jwt.Strategy
 const ExtractJWT  = jwt.ExtractJwt
@@ -18,7 +19,7 @@ exports.initializePassport = () => {
         try {
             let user = await userService.getBy({email: profile._json.email})
             if (!user) {
-                console.log(profile)
+                logger.info(profile)
                 let userNew = {
                     first_name: profile.username,
                     last_name: profile.username,

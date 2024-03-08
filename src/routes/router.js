@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const { authorize } = require('passport')
+const { logger } = require('../utils/logger')
 
 class RouterCustom {
     constructor(){
@@ -25,7 +26,7 @@ class RouterCustom {
             try {
                 await callback.apply(this, params)
             } catch (error) {
-                console.log(error)
+                logger.error(error)
                 params[1].status(500).send(error)
             }
         })

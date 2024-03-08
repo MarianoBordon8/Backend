@@ -3,6 +3,7 @@ const { cartsService, ProductsService } = require('../repositories/services')
 const CustomError = require('../services/errors/CustomError')
 const { Errors } = require('../services/errors/enums')
 const {generateCartErrorInfo, generateCartRemoveErrorInfo} = require('../services/errors/info')
+const { logger } = require('../utils/logger')
 
 
 
@@ -26,7 +27,7 @@ class CartController{
                 return res.status(400).send(`no se encontro el producto de id ${cid}`)
             }
         } catch (error) {
-            next(error)
+            logger.error(error)
         }
     }
 
@@ -36,11 +37,11 @@ class CartController{
             const mensaje = await this.cartsService.createCart(newCart)
             res.send(mensaje)
         } catch (error) {
-            next(error)
+            logger.error(error)
         }
     }
 
-    createProductByCart = async (req, res) => {
+    createProductByCart = async (req, res, next) => {
         try {
             const {cid, pid} = req.params
             if (!cid || !pid) {
@@ -71,7 +72,7 @@ class CartController{
                 payload: respuesta
             })
         } catch (error) {
-            next(error)
+            logger.error(error)
         }
     }
 
@@ -85,11 +86,11 @@ class CartController{
                 payload: respuesta
             })
         } catch (error) {
-            next(error)
+            logger.error(error)
         }
     }
 
-    deleteCart = async (req, res) => {
+    deleteCart = async (req, res, next) => {
         try {
             const {cid} = req.params
             const respuesta = await this.cartsService.deleteCart(cid)
@@ -98,11 +99,11 @@ class CartController{
                 payload: respuesta
             })
         } catch (error) {
-            next(error)
+            logger.error(error)
         }
     }
 
-    deleteProductByCart = async (req, res) => {
+    deleteProductByCart = async (req, res, next) => {
         try {
             const {cid, pid} = req.params
             if(!cid || !pid){
@@ -147,7 +148,7 @@ class CartController{
                     continue
                 }
                 product.stock -= item.quantity
-                console.log(product)
+                logger.info(product)
                 productUpdates.push(this.productService.updateProduct(
                     id,
                     product.title,
@@ -182,7 +183,7 @@ class CartController{
                 return res.status(500).json({ status: 'error', message: 'Failed to update stock' })
             }
         } catch (error) {
-            console.error(error)
+            logger.error(error)
             res.status(500).json({ status: 'error', message: 'Server error' })
         }
     }

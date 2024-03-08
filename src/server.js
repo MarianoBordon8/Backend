@@ -12,6 +12,7 @@ const cors = require('cors')
 const { MessageMongo } = require('./daos/mongo/message.daomongo.js')
 const ProductDaoMongo = require('./daos/mongo/products.daomongo.js')
 const { handleError } = require('./middleware/error/handleError.js')
+const { addLogger, logger } = require('./utils/logger.js')
 
 const PORT = configObject.PORT
 const app = express()
@@ -42,12 +43,13 @@ app.set('view engine', 'hbs')
 app.set('views', __dirname + '/views')
 
 app.use(cookieParser())
+app.use(addLogger)
 
 app.use(Approuter)
 app.use(handleError)
 
 const serverHttp = app.listen(PORT, () => {
-    console.log('funciono')
+    logger.info('funciono')
 })
 
 const io = new Server(serverHttp)
@@ -57,20 +59,20 @@ const messages = new MessageMongo()
 
 
 io.on('connection', async socket => {
-    console.log('nuevo cliente conectado')
+    logger.info('nuevo cliente conectado')
     io.emit('cargar-productos', products)
 
     socket.on('enviar-contenido-producto', async (producto) =>{
         const respuesta = await products.addProduct(producto)
         products = await products.getProducts()
-        console.log(respuesta)
+        logger.info(respuesta)
         io.emit('cargar-productos', products)
     })
 
     socket.on('enviar-id-producto', async (id) =>{
         const res = await products.deleteProduct(parseInt(id))
         products = await products.getProducts()
-        console.log(res)
+        logger.info(res)
         io.emit('cargar-productos', products)
     })
 
