@@ -15,11 +15,6 @@ exports.sendMail = async (destinatario, subject, html)=> {
         from: 'Este mail lo envia <<bordon.marianooscar@gmail.com>>',
         to: destinatario,
         subject,
-        html,
-        attachments: [{
-            filename: '',
-            path: '',
-            cid: ''
-        }]
+        html
     })
 }

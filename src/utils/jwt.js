@@ -2,11 +2,10 @@ const jwt = require('jsonwebtoken')
 const { logger } = require('./logger')
 const JWT_PRIVATE_KEY = "CoderSecretoJesonWebToken"
 
-const createToken = user => jwt.sign(user, JWT_PRIVATE_KEY, {expiresIn: '24h'})
+const createToken = (user,expiracion) => jwt.sign(user, JWT_PRIVATE_KEY, {expiresIn: expiracion})
 
 const authenticationToken = (req, res, next) => {
     const authHeader = req.headers['authorization']
-    logger.info(authHeader)
     if (!authHeader) res.status(401).json({stauts: 'error', error: 'not authenticated'})
 
     const token = authHeader.split(' ')[1]

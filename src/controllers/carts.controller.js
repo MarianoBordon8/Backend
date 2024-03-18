@@ -28,6 +28,7 @@ class CartController{
             }
         } catch (error) {
             logger.error(error)
+            next(error)
         }
     }
 
@@ -38,6 +39,7 @@ class CartController{
             res.send(mensaje)
         } catch (error) {
             logger.error(error)
+            next(error)
         }
     }
 
@@ -58,6 +60,7 @@ class CartController{
                 payload: respuesta
             })
         } catch (error) {
+            logger.error(error)
             next(error)
         }
     }
@@ -73,6 +76,7 @@ class CartController{
             })
         } catch (error) {
             logger.error(error)
+            next(error)
         }
     }
 
@@ -87,6 +91,7 @@ class CartController{
             })
         } catch (error) {
             logger.error(error)
+            next(error)
         }
     }
 
@@ -100,6 +105,7 @@ class CartController{
             })
         } catch (error) {
             logger.error(error)
+            next(error)
         }
     }
 
@@ -120,6 +126,7 @@ class CartController{
                 payload: respuesta
             })
         } catch (error) {
+            logger.error(error)
             next(error)
         }
     }
@@ -185,6 +192,7 @@ class CartController{
         } catch (error) {
             logger.error(error)
             res.status(500).json({ status: 'error', message: 'Server error' })
+            next(error)
         }
     }
 }

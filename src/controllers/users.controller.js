@@ -14,19 +14,19 @@ class UserController{
         try {
             const users = await this.userService.getUsers()
             res.send(users)
-
         } catch (error) {
             logger.error(error)
+            next(error)
         }
     }
 
-    getUsersBy = async (req, res) =>{
+    getUsersBy = async (uid) =>{
         try {
-            const users = await this.userService.getUsers()
-            res.send(users)
-
+            const user = await this.userService.getUsersBy({_id: uid})
+            return user
         } catch (error) {
             logger.error(error)
+            next(error)
         }
     }
 
@@ -48,6 +48,7 @@ class UserController{
                 payload: result
             })
         } catch (error) {
+            logger.error(error)
             next(error)
         }
     }
@@ -70,6 +71,7 @@ class UserController{
                     payload: result
             })
         } catch (error) {
+            logger.error(error)
             next(error)
         }
     }
@@ -84,6 +86,33 @@ class UserController{
             })
         } catch (error) {
             logger.error(error)
+            next(error)
+        }
+    }
+
+    premium = async (req, res)=> {
+        try {
+            let result
+            const { uid } = req.params
+            const user = await this.getUsersBy(uid);
+            switch (user.role) {
+                case 'premium':
+                    result = await this.userService.updateUsers({_id: uid}, {role: 'user'})
+                    break;
+                case 'user':
+                    result = await this.userService.updateUsers({_id: uid}, {role: 'premium'})
+                    break;
+                default:
+                    break;
+                }
+            const user2 = await this.getUsersBy(uid);
+            res.status(200).send({
+                status: "success",
+                payload: `el role cambio a ${user2.role}`
+            })
+        } catch (error) {
+            logger.error(error)
+            next(error)
         }
     }
 }

@@ -1,13 +1,10 @@
 const { connect } = require('mongoose')
 const { program } = require('commander')
-
-
-
 const dotenv = require('dotenv')
 const MongoSingleton = require('../utils/mongoSingleton')
-
-
 const { mode } = program.opts()
+
+
 dotenv.config({
     path: mode === 'production' ? './.env.production' : './.env.development'
 })

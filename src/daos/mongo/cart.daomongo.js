@@ -1,11 +1,12 @@
 const { cartModel } = require("../../models/carts.model.js")
+const { ProductsService } = require("../../repositories/services.js")
 const CustomError = require("../../services/errors/CustomError.js")
 const { Errors } = require("../../services/errors/enums.js")
-const { logger } = require("../../utils/logger.js")
 
 class CartDaoMongo {
     constructor() {
         this.model = cartModel
+        this.productService = ProductsService
     }
 
     async create(newCart) {
@@ -21,6 +22,8 @@ class CartDaoMongo {
     }
 
     async addProductToCart(cid, pid) {
+        const user = req.session.user
+        const producto = this.productService.getProduct({_id: pid})
         if (!user || !user.cart) {
             CustomError.createError({
                 name: 'Add product to cart error',
@@ -31,16 +34,20 @@ class CartDaoMongo {
         const Cart = await this.getBy({_id: cid})
         const newCart = {...Cart._doc}
         const i = newCart.products.findIndex((elm) => elm._id === pid)
-        if (i === -1) {
-            newCart.products.push({
-                product: pid,
-                quantity: 1
-            })
-        } else {
-            newCart.cart[i].quantity++
+        if(user.email !== producto.owner){
+            if (i === -1) {
+                newCart.products.push({
+                    product: pid,
+                    quantity: 1
+                })
+            } else {
+                newCart.cart[i].quantity++
+            }
+            await this.model.updateOne({_id: cid}, newCart)
+            return "añadido correctamente"
+        }else{
+            return 'no puedes añadir ese producto ya que tu lo creaste'
         }
-        await this.model.updateOne({_id: cid}, newCart)
-        return "añadido correctamente"
     }
 
     async deleteProductByCart(cid, pid) {

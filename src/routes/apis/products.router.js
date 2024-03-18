@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const ProductsController = require('../../controllers/products.controller')
+const { authorization } = require('../../middleware/authorization')
 const {
     getProducts,
     getProduct,
@@ -22,7 +23,7 @@ router.post('/', createProduct)
 
 router.put('/:pid', updateProduct)
 
-router.delete('/:pid', deleteProduct)
+router.delete('/:pid',authorization(['ADMIN', 'PREMIUM']), deleteProduct)
 
 
 module.exports = router

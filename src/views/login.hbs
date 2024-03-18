@@ -1,10 +1,15 @@
 <section>
     <h1>login</h1>
-    <form action="../api/sessions/login" method="POST">
+    {{#if errorAlIniciar}}
+        <h2>{{errorMessageLogin}}</h2>
+    {{/if}}
+    <form action="/api/sessions/login" method="POST">
         <input type="text" name="email" placeholder="email">
         <br>
-        <input type="text" name="password" placeholder="password">
+        <input type="password" name="password" placeholder="password">
         <br>
         <button>enviar</button>
+        <a href="/views/register">crear cuenta</a>
+        <a href="/views/reestablecer">Olvide mi contraseña</a>
     </form>
 </section>

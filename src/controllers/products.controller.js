@@ -3,6 +3,7 @@ const { ProductsService } = require('../repositories/services')
 const CustomError = require('../services/errors/CustomError')
 const { Errors } = require('../services/errors/enums')
 const {generateProductErrorInfo} = require('../services/errors/info')
+const { logger } = require('../utils/logger')
 
 
 class ProductsController{
@@ -29,6 +30,7 @@ class ProductsController{
                 return res.send('No existen productos')
             }
         } catch (error) {
+            logger.error(error)
             next(error)
         }
     }
@@ -51,6 +53,7 @@ class ProductsController{
                 return res.status(400).send(`no se encontro el producto de id ${pid}`)
             }
         } catch (error) {
+            logger.error(error)
             next(error)
         }
     }
@@ -69,6 +72,7 @@ class ProductsController{
                 return res.send(mensaje)
             }
         } catch (error) {
+            logger.error(error)
             next(error)
         }
     }
@@ -87,6 +91,7 @@ class ProductsController{
             const mensaje = await this.productsService.updateProduct({_id: pid}, cuerpo)
             return res.send(mensaje)
         } catch (error) {
+            logger.error(error)
             next(error)
         }
     }
@@ -96,9 +101,15 @@ class ProductsController{
     deleteProduct = async (req, res, next) => {
         try {
             const pid = req.params.pid
-            const mensaje = await this.productsService.deleteProduct({_id: pid})
-            return res.send(mensaje)
+            const producto = await this.productsService.getProduct({_id: pid})
+            const user = req.session.user
+            if(user.email === producto.owner || user.role === 'admin'){
+                const mensaje = await this.productsService.deleteProduct({_id: pid})
+                return res.send(mensaje)
+            }
+            return res.send('No tenes los permisos para eliminar este producto')
         } catch (error) {
+            logger.error(error)
             next(error)
         }
     }
@@ -108,6 +119,7 @@ class ProductsController{
             const productsMock = await this.productsService.mock()
             return res.send(productsMock)
         } catch (error) {
+            logger.error(error)
             next(error)
         }
     }

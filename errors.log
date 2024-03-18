@@ -1,0 +1,24 @@
+error: Error message
+error: undefined
+error: Error message
+error: Error message
+error: Error al verificar el token:
+error: Error al verificar el token:
+error: Error al verificar el token:
+error: Error al verificar el token:
+error: Error al verificar el token:
+error: Error al verificar el token:
+error: Error al verificar el token:
+error: Error al verificar el token:
+error: Error al verificar el token:
+error: Error al verificar el token:
+error: Error al verificar el token:
+error: Error al verificar el token:
+error: Error al verificar el token: jwt.verify is not a function {"stack":"TypeError: jwt.verify is not a function\n    at C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\src\\routes\\apis\\sessions.router.js:116:29\n    at Layer.handle [as handle_request] (C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at Route.dispatch (C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\route.js:119:3)\n    at Layer.handle [as handle_request] (C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\index.js:284:15\n    at Function.process_params (C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at Function.handle (C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\index.js:47:12)"}
+error: Error al verificar el token: jwt must be provided {"name":"JsonWebTokenError","stack":"JsonWebTokenError: jwt must be provided\n    at module.exports [as verify] (C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\jsonwebtoken\\verify.js:60:17)\n    at C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\src\\routes\\apis\\sessions.router.js:116:29\n    at Layer.handle [as handle_request] (C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at Route.dispatch (C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\route.js:119:3)\n    at Layer.handle [as handle_request] (C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\index.js:284:15\n    at Function.process_params (C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at Function.handle (C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\node_modules\\express\\lib\\router\\index.js:175:3)"}
+error: Error al verificar el token: Cannot access 'res' before initialization {"stack":"ReferenceError: Cannot access 'res' before initialization\n    at C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\src\\routes\\apis\\sessions.router.js:123:13\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}
+error: Error al verificar el token: Cannot access 'res' before initialization {"stack":"ReferenceError: Cannot access 'res' before initialization\n    at C:\\Users\\bordo\\OneDrive\\Escritorio\\Backend\\Entregables\\primero\\src\\routes\\apis\\sessions.router.js:123:13\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}
+error: undefined
+error: undefined
+error: undefined
+error: undefined

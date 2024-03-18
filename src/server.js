@@ -14,7 +14,7 @@ const ProductDaoMongo = require('./daos/mongo/products.daomongo.js')
 const { handleError } = require('./middleware/error/handleError.js')
 const { addLogger, logger } = require('./utils/logger.js')
 
-const PORT = configObject.PORT
+
 const app = express()
 
 connectdb()
@@ -48,9 +48,20 @@ app.use(addLogger)
 app.use(Approuter)
 app.use(handleError)
 
+const PORT = configObject.PORT
 const serverHttp = app.listen(PORT, () => {
     logger.info('funciono')
 })
+
+//const serverHttp = () => {
+//    const PORT = configObject.PORT
+//    return app.listen(PORT, err => {
+//        if (err) logger.fatal(err)
+//        logger.info('funciono')
+//    })
+//}
+//
+//module.exports = {serverHttp}
 
 const io = new Server(serverHttp)
 

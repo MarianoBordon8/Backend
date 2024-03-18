@@ -1,10 +1,11 @@
 const { faker } = require('@faker-js/faker')
 const { productModel } = require('../../models/products.model')
-const { logger } = require('../../utils/logger')
+const { usersService } = require('../../repositories/services')
 
 class ProductDaoMongo {
     constructor() {
         this.model = productModel
+        this.users = usersService
     }
 
     get = async (opcionesPaginacion) => {

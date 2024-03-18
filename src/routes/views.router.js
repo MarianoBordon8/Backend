@@ -4,19 +4,37 @@ const { authentication } = require('../middleware/auth.middleware.js')
 const CartDaoMongo = require('../daos/mongo/Cart.daomongo.js')
 const ProductDaoMongo = require('../daos/mongo/products.daomongo')
 const { logger } = require('../utils/logger.js')
+const { authorization } = require('../middleware/authorization.js')
 
 const router = Router()
 const products = new ProductDaoMongo()
-
 const carts = new CartDaoMongo()
 
 
 router.get('/register', async (req, res) =>{
-    res.render('register.hbs', {})
+    let errorAlIniciar = false
+    const errorMessageRegister = req.session.errorMessageRegister
+    delete req.session.errorMessageRegister
+    if (errorMessageRegister) {
+        errorAlIniciar = true
+    }
+    res.render('register.hbs', {
+        errorAlIniciar,
+        errorMessageRegister
+    })
 })
 
 router.get('/login', async (req, res) =>{
-    res.render('login.hbs', {})
+    let errorAlIniciar = false
+    const errorMessageLogin = req.session.errorMessageLogin
+    delete req.session.errorMessageLogin
+    if (errorMessageLogin) {
+        errorAlIniciar = true
+    }
+    res.render('login.hbs', {
+        errorAlIniciar,
+        errorMessageLogin
+    })
 })
 
 
@@ -34,7 +52,7 @@ router.get('/', async (req, res) =>{
     })
 })
 
-router.get('/realtimeproducts', authentication, async (req, res) =>{
+router.get('/realtimeproducts',authorization(['PREMIUM']), async (req, res) =>{
     res.render('realTimeProducts.hbs', {
         titulo: 'realTimeProducts',
         style: 'realTimeProducts.css'
@@ -63,7 +81,6 @@ router.get('/products', async (req, res) => {
     if(docs.length === 0){
         vacio = false
     }
-    logger.info(typeof(docs))
     res.render('products.hbs', {
         limit,
         sort,
@@ -76,7 +93,7 @@ router.get('/products', async (req, res) => {
         nextPage,
         vacio: vacio,
     })
-    })
+})
 
 router.get('/users', authentication, async (req, res) => {
     const {numPage=1, limit=10, query, sort} = req.query
@@ -107,6 +124,26 @@ router.get('/carts/:cid', authentication, async (req, res) => {
         carrito: arrayNuevo,
         vacio: true
     })
+})
+
+router.get('/reestablecer', (req,res) => {
+    res.render('reestablecerContraseña.hbs');
+})
+
+router.get('/miratumail', (req,res) => {
+    res.render('miratumail.hbs')
+})
+
+router.get('/newpassword', async(req,res) => {
+    let errorAlIniciar = false
+    const passworderror = req.session.passworderror
+    if (passworderror) {
+        errorAlIniciar = true
+    }
+    res.render('newpassword.hbs', {
+        errorAlIniciar,
+        passworderror
+    });
 })
 
 module.exports = router

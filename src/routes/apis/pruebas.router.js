@@ -1,20 +1,13 @@
 const { Router } = require('express')
 const { sendMail } = require('../../utils/sendMail')
-//const { sendSms } = require('../../utils/sendSms')
 const { faker } = require('@faker-js/faker')
 const compression = require('express-compression')
 const { logger } = require('../../utils/logger')
+const UserDaoMongo = require('../../daos/mongo/user.daomongo')
 
 
 
 const router = Router()
-
-
-//router.get('/sendsms', (req, res) => {
-//    sendSms(`Bienvenido`, {first_name: 'Mariano', last_name: 'Bordon', phone: '+543837698538'})
-//    res.send('SMS enviado')
-//})
-
 
 router.get('/sendmail', (req, res) => {
 
@@ -93,9 +86,24 @@ router.get('/logger', (req, res) => {
     req.logger.info('Info message')
     req.logger.warn('Warning message')
     req.logger.error('Error message')
-    req.logger.fatal('Fatal message')
     res.send('Logging test completed')
 })
+
+const users = new UserDaoMongo()
+router.get('/updateuser', async (req, res) => {
+    const user = await users.getBy({email: 'bordon.marianooscar@gmail.com'})
+    console.log('primer user: ' + user)
+    const userupdate = await users.update({email: 'bordon.marianooscar@gmail.com'}, {password: '1234'}, {returnNewDocument: true})
+    console.log('user update: ' + userupdate)
+    const user2 = await users.getBy({email: 'bordon.marianooscar@gmail.com'})
+    console.log('segundo user: ' + user2)
+
+    res.send('llego aqui')
+})
+
+
+
+
 
 
 
