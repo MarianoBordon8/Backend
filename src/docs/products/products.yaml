@@ -1,0 +1,167 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron obtenidos correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Products'
+        "500":
+          description: error interno del server, usualmente por query defectuosa.
+    post:
+      summary: Crea un nuevo Producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/postProducts"
+      responses:
+        "201":
+          description: El usuario fue creado correctamente
+
+  /api/products/{pid}:
+    get:
+      summary: Obtiene un producto a partir de un id
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: El id del producto que desea solicitar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El producto fue obtenido correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Products"
+    put:
+      summary: edita un producto a partir de un id
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/postProducts"
+      responses:
+        "201":
+          description: El producto fue editado correctamente
+
+    delete:
+      summary: elimina un producto a partir de un id
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: El id del producto que desea eliminar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El producto fue eliminado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Products"
+  /api/products/generate/mockingproducts:
+    get:
+      summary: Obtiene 100 productos autogenerados por el sistema
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron creados correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Products"
+
+
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id autogenerados de Mogno.
+        title:
+          type: string
+          description: Titulo del producto.
+        description:
+          type: string
+          description: Breve descripcion del producto.
+        code:
+          type: string
+          description: Codigo del producto, este es unico.
+        price:
+          type: int
+          description: Precio del producto.
+        stock:
+          type: int
+          description: Stock del producto.
+        thumbnail:
+          type: string
+          description: imagen del producto.
+        owner:
+          type: string
+          description: creador del producto.
+      example:
+        _id: ObjectId("fajsñldf-.sadfjasa.asdfjasldfa")
+        title: Playstation 5
+        description: Consola Playstation 5, incluye un joystick y un juego fisico
+        code: '123'
+        price: 800000
+        stock: 5
+        thumbnail: https://www.google.com/imgres?imgurl=https%3A%2F%2Fcloudfront-us-east-1.images.arcpublishing.com%2Finfobae%2F3L7HZCBW2FHUDLVH4E5ED3DMUE.jpg&tbnid=GTdVd-vkvtUYcM&vet=12ahUKEwj0ktCCmY2FAxXhvJUCHVtVBToQMygIegUIARCFAQ..i&imgrefurl=https%3A%2F%2Fwww.infobae.com%2Fgaming%2F2020%2F06%2F11%2Fplaystation-5-estos-son-los-juegos-de-la-nueva-generacion%2F&docid=F-9dJkA5M284nM&w=1232&h=682&q=play%205%20imagen&ved=2ahUKEwj0ktCCmY2FAxXhvJUCHVtVBToQMygIegUIARCFAQ
+        owner: usuario@gmail.com
+  requestBodies:
+    postProducts:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Titulo del producto.
+        description:
+          type: string
+          description: Breve descripcion del producto.
+        code:
+          type: string
+          description: Codigo del producto, este es unico.
+        price:
+          type: int
+          description: Precio del producto.
+        stock:
+          type: int
+          description: Stock del producto.
+        thumbnail:
+          type: string
+          description: imagen del producto.
+        owner:
+          type: string
+          description: creador del producto.
+      example:
+        title: Playstation 5
+        description: Consola Playstation 5, incluye un joystick y un juego fisico
+        code: '123'
+        price: 800000
+        stock: 5
+        thumbnail: https://www.google.com/imgres?imgurl=https%3A%2F%2Fcloudfront-us-east-1.images.arcpublishing.com%2Finfobae%2F3L7HZCBW2FHUDLVH4E5ED3DMUE.jpg&tbnid=GTdVd-vkvtUYcM&vet=12ahUKEwj0ktCCmY2FAxXhvJUCHVtVBToQMygIegUIARCFAQ..i&imgrefurl=https%3A%2F%2Fwww.infobae.com%2Fgaming%2F2020%2F06%2F11%2Fplaystation-5-estos-son-los-juegos-de-la-nueva-generacion%2F&docid=F-9dJkA5M284nM&w=1232&h=682&q=play%205%20imagen&ved=2ahUKEwj0ktCCmY2FAxXhvJUCHVtVBToQMygIegUIARCFAQ
+        owner: usuario@gmail.com

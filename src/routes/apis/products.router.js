@@ -15,15 +15,15 @@ const router = Router()
 
 router.get('/', getProducts)
 
-router.get('/generate/mockingproducts', generateProduct)
+router.post('/', createProduct)
 
 router.get('/:pid', getProduct)
-
-router.post('/', createProduct)
 
 router.put('/:pid', updateProduct)
 
 router.delete('/:pid',authorization(['ADMIN', 'PREMIUM']), deleteProduct)
+
+router.get('/generate/mockingproducts', generateProduct)
 
 
 module.exports = router

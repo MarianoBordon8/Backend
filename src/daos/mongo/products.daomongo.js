@@ -16,7 +16,7 @@ class ProductDaoMongo {
         return await this.model.find(filter)
     }
 
-    create = async ({ title, description, price, thumbnail , code, stock, categoria }) => {
+    create = async ({ title, description, price, thumbnail , code, stock, categoria, owner }) => {
         if ( !title || !description || !price || !thumbnail || !code || !stock || !categoria) {
             return 'ERROR: debe completar todos los campos'
         }else{
@@ -33,6 +33,7 @@ class ProductDaoMongo {
                     status: true,
                     stock,
                     thumbnail,
+                    owner
                 }
                 await this.model.create(newProduct)
                 return 'se agrego correctamente'

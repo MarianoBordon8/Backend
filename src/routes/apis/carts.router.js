@@ -18,15 +18,13 @@ router.post('/', createCart)
 
 router.get('/:cid', getCart)
 
+router.delete('/:cid', deleteCart)
+
 router.post('/:cid/products/:pid', createProductByCart)
 
 router.delete('/:cid/products/:pid', deleteProductByCart)
 
-router.put('/:cid', updateCart)
-
 router.put('/:cid/products/:pid', updateProductByCart)
-
-router.delete('/:cid', deleteCart)
 
 .post('/:cid/purchase', purchaseCart)
 

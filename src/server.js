@@ -8,11 +8,12 @@ const passport = require('passport')
 const { initializePassport } = require('./config/passport.config.js')
 const Approuter = require('./routes/index.js')
 const cors = require('cors')
-
 const { MessageMongo } = require('./daos/mongo/message.daomongo.js')
 const ProductDaoMongo = require('./daos/mongo/products.daomongo.js')
 const { handleError } = require('./middleware/error/handleError.js')
 const { addLogger, logger } = require('./utils/logger.js')
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUiExpress = require('swagger-ui-express')
 
 
 const app = express()
@@ -44,6 +45,20 @@ app.set('views', __dirname + '/views')
 
 app.use(cookieParser())
 app.use(addLogger)
+
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.1',
+        info: {
+            title: 'Documentación de app',
+            description: 'Api Docs'
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`]
+}
+
+const specs = swaggerJsDoc(swaggerOptions)
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 app.use(Approuter)
 app.use(handleError)

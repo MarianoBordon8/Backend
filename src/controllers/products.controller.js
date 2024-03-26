@@ -88,8 +88,8 @@ class ProductsController{
                     message: 'Error trying to update a product',
                     code: Errors.DATABASES_ERROR
                 })}
-            const mensaje = await this.productsService.updateProduct({_id: pid}, cuerpo)
-            return res.send(mensaje)
+            const result = await this.productsService.updateProduct({_id: pid}, cuerpo)
+            return res.send(result)
         } catch (error) {
             logger.error(error)
             next(error)
@@ -104,8 +104,8 @@ class ProductsController{
             const producto = await this.productsService.getProduct({_id: pid})
             const user = req.session.user
             if(user.email === producto.owner || user.role === 'admin'){
-                const mensaje = await this.productsService.deleteProduct({_id: pid})
-                return res.send(mensaje)
+                const result = await this.productsService.deleteProduct({_id: pid})
+                return res.send(result)
             }
             return res.send('No tenes los permisos para eliminar este producto')
         } catch (error) {
