@@ -25,7 +25,7 @@ class ProductDaoMongo {
                 return (`El codigo ${code} ya existe`)
             }else{
                 const newProduct = {
-                    categoria: categoria,
+                    categoria,
                     title,
                     description,
                     code,
