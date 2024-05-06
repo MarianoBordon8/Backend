@@ -1,0 +1,18 @@
+<section>
+    <h1>Estas seguro que quieres Eliminar Producto</h1>
+    <div>
+        <p>Producto n° {{pid}}</p>
+        <p>Imagen {{thumbnail}} </p>
+        <h2>Nombre del producto: {{ title }}</h2>
+        <h3>Precio: {{ price }}</h3>
+        <p>stock: {{ stock }}</p>
+        <p>Descripcion del producto: {{ description }}</p>
+        <form action="/api/products/del/{{pid}}" method="POST">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit">Confirmar</button>
+        <br>
+        <a href="/views/productos">Cancelar</a>
+        </form>
+        <hr>
+    </div>
+</section>

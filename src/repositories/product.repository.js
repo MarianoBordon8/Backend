@@ -3,7 +3,7 @@ class ProductRepository{
         this.dao = dao
     }
 
-    getProducts = async () => await this.dao.get()
+    getProducts = async (opcionesPaginacion) => await this.dao.get(opcionesPaginacion)
     getProduct = async (filter) => await this.dao.getBy(filter)
     createProduct = async (newProduct) => await this.dao.create(newProduct)
     updateProduct = async (filter, data) => await this.dao.update(filter, data)

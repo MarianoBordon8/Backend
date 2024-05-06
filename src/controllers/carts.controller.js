@@ -14,6 +14,19 @@ class CartController{
         this.ticketModel = ticketModel
     }
 
+    getCarts = async (req,res)=>{
+        try{
+            const allCarts = await this.cartsService.getCarts()
+            res.json({
+                status: 'success',
+                payload: allCarts
+            })
+        }catch(error){
+            logger.error(error)
+            res.status(500).send('Server error')
+        }
+    }
+
     getCart = async (req, res) => {
         try {
             const {cid} = req.params
@@ -34,8 +47,7 @@ class CartController{
 
     createCart = async (req, res) => {
         try {
-            const newCart = req.body
-            const mensaje = await this.cartsService.createCart(newCart)
+            const mensaje = await this.cartsService.createCart()
             res.send(mensaje)
         } catch (error) {
             logger.error(error)
@@ -45,7 +57,6 @@ class CartController{
 
     createProductByCart = async (req, res, next) => {
         try {
-            const {cid, pid} = req.params
             if (!cid || !pid) {
                 CustomError.createError({
                     name: 'Add product to cart error',

@@ -1,4 +1,3 @@
-const { faker } = require('@faker-js/faker')
 const { ProductsService } = require('../repositories/services')
 const CustomError = require('../services/errors/CustomError')
 const { Errors } = require('../services/errors/enums')
@@ -6,11 +5,12 @@ const {generateProductErrorInfo} = require('../services/errors/info')
 const { logger } = require('../utils/logger')
 
 
+
+
 class ProductsController{
     constructor(){
         this.productsService = ProductsService
     }
-
     getProducts = async (req, res, next) => {
         try {
             const productos = await this.productsService.getProducts()
@@ -61,16 +61,16 @@ class ProductsController{
     createProduct = async (req, res, next) => {
         try {
             const cuerpo = req.body
-            if(!cuerpo.title || !cuerpo.price || !cuerpo.code || !cuerpo.stock){
-                    CustomError.createError({
-                        name: 'Product creation error',
-                        cause: generateProductErrorInfo(cuerpo),
-                        message: 'Error trying to add a product',
-                        code: Errors.DATABASES_ERROR
-                    })
+            if(cuerpo.title && cuerpo.price && cuerpo.code && cuerpo.stock){
                 const mensaje = await this.productsService.createProduct(cuerpo)
-                return res.send(mensaje)
+                res.redirect('/views/productos')
             }
+            CustomError.createError({
+                name: 'Product creation error',
+                cause: generateProductErrorInfo(cuerpo),
+                message: 'Error trying to add a product',
+                code: Errors.DATABASES_ERROR
+            })
         } catch (error) {
             logger.error(error)
             next(error)
@@ -81,15 +81,8 @@ class ProductsController{
         try {
             const pid = req.params.pid
             const cuerpo = req.body
-            if(!cuerpo.title || !cuerpo.price || !cuerpo.code || !cuerpo.stock){
-                CustomError.createError({
-                    name: 'Product to update error',
-                    cause: generateProductErrorInfo(cuerpo),
-                    message: 'Error trying to update a product',
-                    code: Errors.DATABASES_ERROR
-                })}
             const result = await this.productsService.updateProduct({_id: pid}, cuerpo)
-            return res.send(result)
+            res.redirect('/views/productos')
         } catch (error) {
             logger.error(error)
             next(error)
@@ -101,12 +94,12 @@ class ProductsController{
     deleteProduct = async (req, res, next) => {
         try {
             const pid = req.params.pid
-            const producto = await this.productsService.getProduct({_id: pid})
-            const user = req.session.user
-            if(user.email === producto.owner || user.role === 'admin'){
-                const result = await this.productsService.deleteProduct({_id: pid})
-                return res.send(result)
-            }
+            //const user = req.session.user
+            console.log(pid)
+            //if(user.email === producto.owner || user.role === 'admin'){
+            const result = await this.productsService.deleteProduct({_id: pid})
+            res.redirect('/views/productos')
+            //}
             return res.send('No tenes los permisos para eliminar este producto')
         } catch (error) {
             logger.error(error)

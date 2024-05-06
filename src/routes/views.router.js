@@ -1,149 +1,51 @@
 const { Router } = require('express')
-const { usersModel } = require('../models/users.model.js')
 const { authentication } = require('../middleware/auth.middleware.js')
-const CartDaoMongo = require('../daos/mongo/Cart.daomongo.js')
-const ProductDaoMongo = require('../daos/mongo/products.daomongo')
-const { logger } = require('../utils/logger.js')
 const { authorization } = require('../middleware/authorization.js')
+const ViewsController = require('../controllers/views.controller.js')
 
 const router = Router()
-const products = new ProductDaoMongo()
-const carts = new CartDaoMongo()
 
+const {
+    register,
+    login,
+    home,
+    realTimeProducts,
+    products,
+    users,
+    carts,
+    reestablecer,
+    miratuMail,
+    newPassword,
+    productos,
+    newProduct,
+    updateProduct,
+    deleteProduct
+} = new ViewsController()
 
-router.get('/register', async (req, res) =>{
-    let errorAlIniciar = false
-    const errorMessageRegister = req.session.errorMessageRegister
-    delete req.session.errorMessageRegister
-    if (errorMessageRegister) {
-        errorAlIniciar = true
-    }
-    res.render('register.hbs', {
-        errorAlIniciar,
-        errorMessageRegister
-    })
-})
+router.get('/register', register)
 
-router.get('/login', async (req, res) =>{
-    let errorAlIniciar = false
-    const errorMessageLogin = req.session.errorMessageLogin
-    delete req.session.errorMessageLogin
-    if (errorMessageLogin) {
-        errorAlIniciar = true
-    }
-    res.render('login.hbs', {
-        errorAlIniciar,
-        errorMessageLogin
-    })
-})
+router.get('/login', login)
 
+router.get('/', home)
 
+router.get('/realtimeproducts',authorization(['PREMIUM']), realTimeProducts)
 
-router.get('/', async (req, res) =>{
-    const productos = await products.get()
-    let vacio = true
-    if(productos.length === 0){
-        vacio = false
-    }
-    res.render('home.hbs', {
-        products: productos,
-        vacio: vacio,
-        style: 'home.css'
-    })
-})
+router.get('/users', authentication, users)
 
-router.get('/realtimeproducts',authorization(['PREMIUM']), async (req, res) =>{
-    res.render('realTimeProducts.hbs', {
-        titulo: 'realTimeProducts',
-        style: 'realTimeProducts.css'
-    })
-})
+router.get('/carts/:cid', authentication, carts)
 
-router.get('/chat', async (req, res) => {
-    res.render('chat', {})
-})
+router.get('/reestablecer', reestablecer)
 
-router.get('/products', async (req, res) => {
-    const {numPage=1, limit=4, query, sort} = req.query
-    const opcionesPaginacion = {
-        limit: limit,
-        page: numPage,
-        lean: true
-    }
-    if (sort) {
-        const ordenacion = sort.startsWith('-') ? 'asc' : 'desc'
-        opcionesPaginacion.sort = {['price']:ordenacion}
-    }
-    const {
-        docs, totalDocs, page, hasPrevPage, hasNextPage, prevPage, nextPage
-    } = await products.get(opcionesPaginacion)
-    let vacio = true
-    if(docs.length === 0){
-        vacio = false
-    }
-    res.render('products.hbs', {
-        limit,
-        sort,
-        productos: docs,
-        totalDocs,
-        page,
-        hasPrevPage,
-        hasNextPage,
-        prevPage,
-        nextPage,
-        vacio: vacio,
-    })
-})
+router.get('/miratumail', miratuMail)
 
-router.get('/users', authentication, async (req, res) => {
-    const {numPage=1, limit=10, query, sort} = req.query
-    const opcionesPaginacion = {
-        limit: limit,
-        page: numPage,
-        lean: true
-    }
-    if (sort) {
-        opcionesPaginacion.sort = sort
-    }
-    const {
-        docs, totalDocs, page, hasPrevPage, hasNextPage, prevPage, nextPage
-    } = await usersModel.paginate({}, opcionesPaginacion)
-    res.render('user', {users: docs, totalDocs, page, hasPrevPage, hasNextPage, prevPage, nextPage})
-})
+router.get('/newpassword', newPassword)
 
-router.get('/carts/:cid', authentication, async (req, res) => {
-    const {cid} = req.params
-    const cartRender = await carts.getBy({_id: cid})
-    const arrayNuevo = []
+router.get('/productos', productos)
 
-    for (let i = 0; i <= (cartRender.products.length - 1); i++) {
-        arrayNuevo.push(cartRender.products[i])
-    }
+router.get('/newproduct', newProduct)
 
-    res.render('cartsByID', {
-        carrito: arrayNuevo,
-        vacio: true
-    })
-})
+router.get('/update/:pid', updateProduct)
 
-router.get('/reestablecer', (req,res) => {
-    res.render('reestablecerContraseña.hbs');
-})
-
-router.get('/miratumail', (req,res) => {
-    res.render('miratumail.hbs')
-})
-
-router.get('/newpassword', async(req,res) => {
-    let errorAlIniciar = false
-    const passworderror = req.session.passworderror
-    if (passworderror) {
-        errorAlIniciar = true
-    }
-    res.render('newpassword.hbs', {
-        errorAlIniciar,
-        passworderror
-    });
-})
+router.get('/delete/:pid', deleteProduct)
 
 module.exports = router

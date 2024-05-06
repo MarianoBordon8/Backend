@@ -16,8 +16,8 @@ class ProductDaoMongo {
         return await this.model.find(filter)
     }
 
-    create = async ({ title, description, price, thumbnail , code, stock, categoria, owner }) => {
-        if ( !title || !description || !price || !thumbnail || !code || !stock || !categoria) {
+    create = async ({ title, description, price, thumbnail , code, stock }) => {
+        if ( !title || !description || !price || !thumbnail || !code || !stock ) {
             return 'ERROR: debe completar todos los campos'
         }else{
             const codeEncontrado = await this.model.findOne({code: code})
@@ -25,7 +25,6 @@ class ProductDaoMongo {
                 return (`El codigo ${code} ya existe`)
             }else{
                 const newProduct = {
-                    categoria,
                     title,
                     description,
                     code,
@@ -33,7 +32,7 @@ class ProductDaoMongo {
                     status: true,
                     stock,
                     thumbnail,
-                    owner
+                    owner: 'adminPrueba'
                 }
                 await this.model.create(newProduct)
                 return 'se agrego correctamente'

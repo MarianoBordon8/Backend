@@ -16,6 +16,7 @@ const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUiExpress = require('swagger-ui-express')
 
 
+
 const app = express()
 
 connectdb()
@@ -46,19 +47,19 @@ app.set('views', __dirname + '/views')
 app.use(cookieParser())
 app.use(addLogger)
 
-const swaggerOptions = {
-    definition: {
-        openapi: '3.0.1',
-        info: {
-            title: 'Documentación de app',
-            description: 'Api Docs'
-        }
-    },
-    apis: [`${__dirname}/docs/**/*.yaml`]
-}
+//const swaggerOptions = {
+//    definition: {
+//        openapi: '3.0.1',
+//        info: {
+//            title: 'Documentación de app',
+//            description: 'Api Docs'
+//        }
+//    },
+//    apis: [`${__dirname}/docs/**/*.yaml`]
+//}
 
-const specs = swaggerJsDoc(swaggerOptions)
-app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+//const specs = swaggerJsDoc(swaggerOptions)
+//app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 app.use(Approuter)
 app.use(handleError)

@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken')
-const { logger } = require('./logger')
 const JWT_PRIVATE_KEY = "CoderSecretoJesonWebToken"
 
 const createToken = (user,expiracion) => jwt.sign(user, JWT_PRIVATE_KEY, {expiresIn: expiracion})

@@ -3,7 +3,8 @@ class CartRepository{
         this.dao =  dao
     }
     getCart = async (cid) => await this.dao.getBy(cid)
-    createCart = async (newCart) => await this.dao.create(newCart)
+    getCarts = async() => await this.dao.gets()
+    createCart = async () => await this.dao.create()
     createProductByCart = async (cid, pid) => await this.dao.addProductToCart(cid, pid)
     updateCart = async (cid, data) => await this.dao.update(cid, data)
     updateProductByCart = async (cid, pid, newCantidad) => await this.dao.updateProductByCart(cid, pid, newCantidad)

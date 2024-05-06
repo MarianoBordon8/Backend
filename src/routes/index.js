@@ -9,6 +9,7 @@ const { logger } = require('../utils/logger.js')
 
 const router = Router()
 
+//router.use('/api/payments', paymentRouter)
 router.use('/api/products', productsRouter)
 router.use('/api/carts', cartRouter)
 router.use('/views', viewsRouter)

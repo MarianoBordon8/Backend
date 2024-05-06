@@ -1,0 +1,34 @@
+<div class="divExterior">
+    <h1>Bienvenido a HOME</h1>
+    {{#if vacio}}
+        {{#each productos}}
+            <div>
+                <p>Producto n° {{this._id}}</p>
+                <p>Imagen {{this.thumbnail}} </p>
+                <h2>Nombre del producto: {{ this.title }}</h2>
+                <h3>Precio: {{ this.price }}</h3>
+                <p>stock: {{ this.stock }}</p>
+                <p>Descripcion del producto: {{ this.description }}</p>
+                <p>Descripcion del producto: {{ cid }}</p>
+                <form action="/api/carts/{{cid}}/products/{{this._id}}" method="POST">
+                    <button type="submit">CARRITO</button>
+                </form>
+                <a href="/views/update/{{this._id}}">editar</a>
+                <a href="/views/delete/{{this._id}}">delete</a>
+                <hr>
+            </div>
+        {{/each}}
+    {{else}}
+        <h2>No tienes productos</h1>
+    {{/if}}
+    <div class="text-center">
+        {{#if hasPrevPage}}
+            <a href="/views/productos?numPage={{prevPage}}&limit={{limit}}&sort={{sort}}" class="btn btn-outline-dark">Anterior</a>
+        {{/if}}
+        <label>{{page}}</label>
+        {{#if hasNextPage}}
+            <a href="/views/productos?numPage={{nextPage}}&limit={{limit}}&sort={{sort}}" class="btn btn-outline-dark">Siguiente</a>
+        {{/if}}
+        <a href="/views/newproduct">Agregar un producto</a>
+    </div>
+</div>
