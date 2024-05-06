@@ -112,6 +112,8 @@ class ViewsController{
 
     productos = async (req, res) => {
         const {numPage=1, limit=4, sort} = req.query
+        //const cid = req.session.user.cart._id
+        //no logro que "cid" se pase como parametro en el render
         const opcionesPaginacion = {
             limit: limit,
             page: numPage,
@@ -129,6 +131,7 @@ class ViewsController{
             vacio = false
         }
         res.render('productos.hbs', {
+            //cid: cid
             limit,
             sort,
             productos: docs,

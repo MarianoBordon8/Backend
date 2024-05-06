@@ -61,6 +61,8 @@ class ProductsController{
     createProduct = async (req, res, next) => {
         try {
             const cuerpo = req.body
+            // const email.user = req.session.user.email
+            //no tengo este valor para crear el owner
             if(cuerpo.title && cuerpo.price && cuerpo.code && cuerpo.stock){
                 const mensaje = await this.productsService.createProduct(cuerpo)
                 res.redirect('/views/productos')
