@@ -114,3 +114,172 @@ error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
 error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
 error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
 error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined {"cause":"One or more properties were incomplete or not valid.\n        list of requires properties\n        - Product: product not found, recived [object Object]\n        - Product not added: can't add new product to database\n        - Product no deleted: not found a product to delete\n    ","code":3,"name":"Product creation error"}
+error: undefined {"cause":"One or more properties were incomplete or not valid.\n        list of requires properties\n        - Product: product not found, recived [object Object]\n        - Product not added: can't add new product to database\n        - Product no deleted: not found a product to delete\n    ","code":3,"name":"Product creation error"}
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined {"cause":"One or more properties were incomplete or not valid.\n        list of requires properties\n        - Product: product not found, recived [object Object]\n        - Product not added: can't add new product to database\n        - Product no deleted: not found a product to delete\n    ","code":3,"name":"Product creation error"}
+error: undefined {"cause":"One or more properties were incomplete or not valid.\n        list of requires properties\n        - Product: product not found, recived [object Object]\n        - Product not added: can't add new product to database\n        - Product no deleted: not found a product to delete\n    ","code":3,"name":"Product creation error"}
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined {"kind":"Number","path":"products.quantity","reason":{"actual":false,"code":"ERR_ASSERTION","expected":true,"generatedMessage":true,"operator":"=="},"stringValue":"\"{ newQuantity: '2' }\"","value":{"newQuantity":"2"},"valueType":"Object"}
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined {"_message":"ticket validation failed","errors":{"amount":{"kind":"required","message":"Path `amount` is required.","name":"ValidatorError","path":"amount","properties":{"message":"Path `amount` is required.","path":"amount","type":"required"}},"code":{"kind":"required","message":"Path `code` is required.","name":"ValidatorError","path":"code","properties":{"message":"Path `code` is required.","path":"code","type":"required"}},"purchaser":{"kind":"required","message":"Path `purchaser` is required.","name":"ValidatorError","path":"purchaser","properties":{"message":"Path `purchaser` is required.","path":"purchaser","type":"required"}}}}
+error: undefined {"_message":"ticket validation failed","errors":{"amount":{"kind":"required","message":"Path `amount` is required.","name":"ValidatorError","path":"amount","properties":{"message":"Path `amount` is required.","path":"amount","type":"required"}},"code":{"kind":"required","message":"Path `code` is required.","name":"ValidatorError","path":"code","properties":{"message":"Path `code` is required.","path":"code","type":"required"}},"purchaser":{"kind":"required","message":"Path `purchaser` is required.","name":"ValidatorError","path":"purchaser","properties":{"message":"Path `purchaser` is required.","path":"purchaser","type":"required"}}}}
+error: undefined {"_message":"ticket validation failed","errors":{"amount":{"kind":"required","message":"Path `amount` is required.","name":"ValidatorError","path":"amount","properties":{"message":"Path `amount` is required.","path":"amount","type":"required"}},"code":{"kind":"required","message":"Path `code` is required.","name":"ValidatorError","path":"code","properties":{"message":"Path `code` is required.","path":"code","type":"required"}},"purchaser":{"kind":"required","message":"Path `purchaser` is required.","name":"ValidatorError","path":"purchaser","properties":{"message":"Path `purchaser` is required.","path":"purchaser","type":"required"}}}}
+error: undefined {"_message":"ticket validation failed","errors":{"amount":{"kind":"required","message":"Path `amount` is required.","name":"ValidatorError","path":"amount","properties":{"message":"Path `amount` is required.","path":"amount","type":"required"}},"code":{"kind":"required","message":"Path `code` is required.","name":"ValidatorError","path":"code","properties":{"message":"Path `code` is required.","path":"code","type":"required"}},"purchaser":{"kind":"required","message":"Path `purchaser` is required.","name":"ValidatorError","path":"purchaser","properties":{"message":"Path `purchaser` is required.","path":"purchaser","type":"required"}}}}
+error: undefined {"_message":"ticket validation failed","errors":{"amount":{"kind":"required","message":"Path `amount` is required.","name":"ValidatorError","path":"amount","properties":{"message":"Path `amount` is required.","path":"amount","type":"required"}},"code":{"kind":"required","message":"Path `code` is required.","name":"ValidatorError","path":"code","properties":{"message":"Path `code` is required.","path":"code","type":"required"}},"purchaser":{"kind":"required","message":"Path `purchaser` is required.","name":"ValidatorError","path":"purchaser","properties":{"message":"Path `purchaser` is required.","path":"purchaser","type":"required"}}}}
+error: undefined {"_message":"ticket validation failed","errors":{"amount":{"kind":"required","message":"Path `amount` is required.","name":"ValidatorError","path":"amount","properties":{"message":"Path `amount` is required.","path":"amount","type":"required"}},"code":{"kind":"required","message":"Path `code` is required.","name":"ValidatorError","path":"code","properties":{"message":"Path `code` is required.","path":"code","type":"required"}},"purchaser":{"kind":"required","message":"Path `purchaser` is required.","name":"ValidatorError","path":"purchaser","properties":{"message":"Path `purchaser` is required.","path":"purchaser","type":"required"}}}}
+error: undefined {"_message":"ticket validation failed","errors":{"amount":{"kind":"required","message":"Path `amount` is required.","name":"ValidatorError","path":"amount","properties":{"message":"Path `amount` is required.","path":"amount","type":"required"}},"code":{"kind":"required","message":"Path `code` is required.","name":"ValidatorError","path":"code","properties":{"message":"Path `code` is required.","path":"code","type":"required"}},"purchaser":{"kind":"required","message":"Path `purchaser` is required.","name":"ValidatorError","path":"purchaser","properties":{"message":"Path `purchaser` is required.","path":"purchaser","type":"required"}}}}
+error: undefined {"_message":"ticket validation failed","errors":{"amount":{"kind":"required","message":"Path `amount` is required.","name":"ValidatorError","path":"amount","properties":{"message":"Path `amount` is required.","path":"amount","type":"required"}},"code":{"kind":"required","message":"Path `code` is required.","name":"ValidatorError","path":"code","properties":{"message":"Path `code` is required.","path":"code","type":"required"}},"purchaser":{"kind":"required","message":"Path `purchaser` is required.","name":"ValidatorError","path":"purchaser","properties":{"message":"Path `purchaser` is required.","path":"purchaser","type":"required"}}}}
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined {"_message":"ticket validation failed","errors":{"amount":{"kind":"required","message":"Path `amount` is required.","name":"ValidatorError","path":"amount","properties":{"message":"Path `amount` is required.","path":"amount","type":"required"}}}}
+error: undefined {"_message":"ticket validation failed","errors":{"amount":{"kind":"required","message":"Path `amount` is required.","name":"ValidatorError","path":"amount","properties":{"message":"Path `amount` is required.","path":"amount","type":"required"}}}}
+error: undefined
+error: undefined
+error: undefined {"code":11000,"index":0,"keyPattern":{"code":1},"keyValue":{"code":"1"}}
+error: undefined {"code":11000,"index":0,"keyPattern":{"code":1},"keyValue":{"code":"1"}}
+error: undefined {"code":11000,"index":0,"keyPattern":{"code":1},"keyValue":{"code":"1"}}
+error: undefined {"code":11000,"index":0,"keyPattern":{"code":1},"keyValue":{"code":"1"}}
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined {"cause":"One or more properties were incomplete or not valid.\n        list of requires properties\n        - Product: product not found, recived [object Object]\n        - Product not added: can't add new product to database\n        - Product no deleted: not found a product to delete\n    ","code":3,"name":"Product creation error"}
+error: undefined {"cause":"One or more properties were incomplete or not valid.\n        list of requires properties\n        - Product: product not found, recived [object Object]\n        - Product not added: can't add new product to database\n        - Product no deleted: not found a product to delete\n    ","code":3,"name":"Product creation error"}
+error: No eres un usuario premium
+error: undefined {"cause":"One or more properties were incomplete or not valid.\n        list of requires properties\n        - Product: product not found, recived [object Object]\n        - Product not added: can't add new product to database\n        - Product no deleted: not found a product to delete\n    ","code":3,"name":"Product creation error"}
+error: undefined {"cause":"One or more properties were incomplete or not valid.\n        list of requires properties\n        - Product: product not found, recived [object Object]\n        - Product not added: can't add new product to database\n        - Product no deleted: not found a product to delete\n    ","code":3,"name":"Product creation error"}

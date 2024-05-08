@@ -17,8 +17,7 @@ dbConection()
 app.get('/api/user', async (req, res) =>{
     try {
         const { limit=5, page=1 }= req.query
-        console.log('limit: ', limit)
-        console.log('page: ', page)
+
         const result = await UserModel.paginate({}, {limit, page, lean: true})
         res.status(200).send({
             status: 'success',

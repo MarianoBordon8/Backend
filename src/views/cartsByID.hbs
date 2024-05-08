@@ -1,18 +1,23 @@
 <div class="divExterior">
     <h1>Bienvenido al Carrito</h1>
-    {{#if vacio}}
         {{#each carrito}}
-            <div>
-                <p>Imagen {{this.product.thumbnail}} </p>
-                <h2>Nombre del producto: {{ this.product.title }}</h2>
-                <p>Descripcion: {{ this.product.description }}</p>
-                <h3>Precio: {{ this.product.price }}</h3>
-                <p>stock: {{ this.product.stock }}</p>
-                <p>Descripcion del producto: {{ this.product.description }}</p>
-                <hr>
-            </div>
+        <p>title: {{this.title}} </p>
+        <p>quantity: {{this.quantity}} </p>
+        <p>disponibles: {{this.stock}} </p>
+        <p>Precio unitario: {{this.precioU}} </p>
+        <p>Total: {{this.total}} </p>
+        <form action="/api/carts/up/{{../cid}}/products/{{this._id}}" method="POST">
+            <input type="text" name="newQuantity" placeholder="newQuantity">
+            <br>
+            <button type="submit">Editar Cantidad</button>
+        </form>
+        <form action="/api/carts/del/{{../cid}}/products/{{this._id}}" method="POST">
+            <button type="submit">ELIMINAR</button>
+        </form>
+        <hr>
         {{/each}}
-    {{else}}
-        <h2>No tienes productos</h2>
-    {{/if}}
+        <form action="/api/carts/{{cid}}/purchase" method="POST">
+            <button type="submit">COMPRAR</button>
+        </form>
+        <a href="/views/productos">Cancelar</a>
 </div>

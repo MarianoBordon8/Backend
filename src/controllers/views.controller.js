@@ -112,8 +112,7 @@ class ViewsController{
 
     productos = async (req, res) => {
         const {numPage=1, limit=4, sort} = req.query
-        //const cid = req.session.user.cart._id
-        //no logro que "cid" se pase como parametro en el render
+        const cid = req.session.user.cart
         const opcionesPaginacion = {
             limit: limit,
             page: numPage,
@@ -131,7 +130,7 @@ class ViewsController{
             vacio = false
         }
         res.render('productos.hbs', {
-            //cid: cid
+            cid: cid,
             limit,
             sort,
             productos: docs,
@@ -166,6 +165,28 @@ class ViewsController{
             thumbnail: product[0].thumbnail,
             stock: product[0].stock,
             price: product[0].price
+        })
+    }
+
+    carrito = async (req,res) => {
+        const cid = req.session.user.cart
+        const carrito = await this.cartService.getCart({_id: cid})
+        let array = []
+        let array2 = [{pro: 1},{pro: 2},{pro: 3}]
+        for (let i = 0; i < carrito.products.length; i++) {
+            array.push({
+                title: carrito.products[i].product.title,
+                quantity: carrito.products[i].quantity,
+                stock: carrito.products[i].product.stock,
+                precioU: carrito.products[i].product.price,
+                _id: carrito.products[i].product._id,
+                total: carrito.products[i].product.price * carrito.products[i].quantity
+            })
+        }
+        res.render('cartsById.hbs',{
+            cid: cid,
+            carrito: array,
+            array: array2
         })
     }
 }

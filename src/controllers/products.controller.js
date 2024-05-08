@@ -14,21 +14,7 @@ class ProductsController{
     getProducts = async (req, res, next) => {
         try {
             const productos = await this.productsService.getProducts()
-            const limit = req.query.limit
-            if(productos.length !== 0){
-                if (!limit){
-                    return res.json(productos)
-                }else{
-                    if(productos.length >= limit){
-                        const limitProducts = productos.slice(0, limit)
-                        return res.json(limitProducts)
-                    }else{
-                        return res.send('Fuera de rango')
-                    }
-                }
-            }else{
-                return res.send('No existen productos')
-            }
+            return productos
         } catch (error) {
             logger.error(error)
             next(error)
@@ -61,10 +47,16 @@ class ProductsController{
     createProduct = async (req, res, next) => {
         try {
             const cuerpo = req.body
-            // const email.user = req.session.user.email
-            //no tengo este valor para crear el owner
-            if(cuerpo.title && cuerpo.price && cuerpo.code && cuerpo.stock){
-                const mensaje = await this.productsService.createProduct(cuerpo)
+            const email = req.session.user.email
+            const role = req.session.user.role
+            console.log(role)
+            if(role === 'premium' || role === 'PREMIUM'){
+                if(cuerpo.title && cuerpo.price && cuerpo.code && cuerpo.stock){
+                    const mensaje = await this.productsService.createProduct(cuerpo, email)
+                    res.redirect('/views/productos')
+                }
+            }else{
+                logger.error('No eres un usuario premium')
                 res.redirect('/views/productos')
             }
             CustomError.createError({
@@ -82,8 +74,27 @@ class ProductsController{
     updateProduct = async (req, res, next) => {
         try {
             const pid = req.params.pid
-            const cuerpo = req.body
-            const result = await this.productsService.updateProduct({_id: pid}, cuerpo)
+            const {title, description, price, stock, thumbnail, code} = req.body
+            const email = req.session.user.email
+            const product = await this.productsService.getProduct({_id: pid})
+            const updatedTitle = title === '' ? product[0].title : title
+            const updatedDescription = description === '' ? product[0].description : description
+            const updatedPrice = price === '' ? product[0].price : price
+            const updatedStock = stock === '' ? product[0].stock : stock
+            const updatedThumbnail = thumbnail === '' ? product[0].thumbnail : thumbnail
+            const updatedCode = code === '' ? product[0].code : code
+            if(product[0].owner === email){
+                const result = await this.productsService.updateProduct({_id: pid}, {
+                    title: updatedTitle,
+                    description: updatedDescription,
+                    price: updatedPrice,
+                    stock: updatedStock,
+                    thumbnail: updatedThumbnail,
+                    code: updatedCode
+                })
+            }else{
+                req.session.error = 'no puedes editar un producto que no creaste'
+            }
             res.redirect('/views/productos')
         } catch (error) {
             logger.error(error)
@@ -96,12 +107,14 @@ class ProductsController{
     deleteProduct = async (req, res, next) => {
         try {
             const pid = req.params.pid
-            //const user = req.session.user
-            console.log(pid)
-            //if(user.email === producto.owner || user.role === 'admin'){
-            const result = await this.productsService.deleteProduct({_id: pid})
+            const email = req.session.user.email
+            const product = await this.productsService.getProduct({_id: pid})
+            if(product[0].owner === email){
+                const result = await this.productsService.deleteProduct({_id: pid})
+            }else{
+                req.error.update = 'no puedes eliminar un producto que no creaste'
+            }
             res.redirect('/views/productos')
-            //}
             return res.send('No tenes los permisos para eliminar este producto')
         } catch (error) {
             logger.error(error)

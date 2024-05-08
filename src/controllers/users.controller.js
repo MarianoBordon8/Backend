@@ -12,8 +12,16 @@ class UserController{
 
     getUsers = async (req, res) =>{
         try {
+            mostrar = []
             const users = await this.userService.getUsers()
-            res.send(users)
+            for (let i = 0; i < users.length; i++) {
+                users.push({
+                    nombre: users[i].first_name,
+                    email: users[i].email,
+                    rol: users[i].role
+                })
+            }
+            res.send(mostrar)
         } catch (error) {
             logger.error(error)
             next(error)

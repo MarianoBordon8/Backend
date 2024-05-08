@@ -9,8 +9,7 @@
                 <h3>Precio: {{ this.price }}</h3>
                 <p>stock: {{ this.stock }}</p>
                 <p>Descripcion del producto: {{ this.description }}</p>
-                <p>Descripcion del producto: {{ cid }}</p>
-                <form action="/api/carts/{{cid}}/products/{{this._id}}" method="POST">
+                <form action="/api/carts/{{../cid}}/products/{{this._id}}" method="POST">
                     <button type="submit">CARRITO</button>
                 </form>
                 <a href="/views/update/{{this._id}}">editar</a>
@@ -30,5 +29,6 @@
             <a href="/views/productos?numPage={{nextPage}}&limit={{limit}}&sort={{sort}}" class="btn btn-outline-dark">Siguiente</a>
         {{/if}}
         <a href="/views/newproduct">Agregar un producto</a>
+        <a href="/views/carrito">VER CARRITO</a>
     </div>
 </div>

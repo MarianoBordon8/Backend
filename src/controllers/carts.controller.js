@@ -1,9 +1,10 @@
 const { ticketModel } = require('../models/ticket.model')
-const { cartsService, ProductsService } = require('../repositories/services')
+const { cartsService, ProductsService, ticketService } = require('../repositories/services')
 const CustomError = require('../services/errors/CustomError')
 const { Errors } = require('../services/errors/enums')
 const {generateCartErrorInfo, generateCartRemoveErrorInfo} = require('../services/errors/info')
 const { logger } = require('../utils/logger')
+const { sendMail } = require('../utils/sendMail')
 
 
 
@@ -11,10 +12,11 @@ class CartController{
     constructor(){
         this.cartsService = cartsService
         this.productService = ProductsService
+        this.ticketService = ticketService
         this.ticketModel = ticketModel
     }
 
-    getCarts = async (req,res)=>{
+    getCarts = async (req,res, next)=>{
         try{
             const allCarts = await this.cartsService.getCarts()
             res.json({
@@ -27,7 +29,7 @@ class CartController{
         }
     }
 
-    getCart = async (req, res) => {
+    getCart = async (req, res, next) => {
         try {
             const {cid} = req.params
             const card = await this.cartsService.getCart({_id: cid})
@@ -45,7 +47,7 @@ class CartController{
         }
     }
 
-    createCart = async (req, res) => {
+    createCart = async (req, res, next) => {
         try {
             const mensaje = await this.cartsService.createCart()
             res.send(mensaje)
@@ -57,6 +59,7 @@ class CartController{
 
     createProductByCart = async (req, res, next) => {
         try {
+            const {cid, pid} = req.params
             if (!cid || !pid) {
                 CustomError.createError({
                     name: 'Add product to cart error',
@@ -66,17 +69,14 @@ class CartController{
                 })
             }
             const respuesta = await this.cartsService.createProductByCart(cid, pid)
-            res.send({
-                status: 'success',
-                payload: respuesta
-            })
+            res.redirect('/views/productos')
         } catch (error) {
             logger.error(error)
             next(error)
         }
     }
 
-    updateCart = async (req, res) => {
+    updateCart = async (req, res, next) => {
         try {
             const {cid} = req.params
             const data = req.body
@@ -91,15 +91,12 @@ class CartController{
         }
     }
 
-    updateProductByCart = async (req, res) => {
+    updateProductByCart = async (req, res, next) => {
         try {
             const {cid, pid} = req.params
-            const newCantidad = req.body
-            const respuesta = await this.cartsService.updateProductByCart(cid, pid, newCantidad)
-            res.send({
-                status: 'success',
-                payload: respuesta
-            })
+            const {newQuantity} = req.body
+            const respuesta = await this.cartsService.updateProductByCart(cid, pid, parseInt(newQuantity))
+            res.redirect('/views/carrito')
         } catch (error) {
             logger.error(error)
             next(error)
@@ -132,74 +129,62 @@ class CartController{
                 })
             }
             const respuesta = await this.cartsService.deleteProductByCart(cid, pid)
-            res.send({
-                status: 'success',
-                payload: respuesta
-            })
+            res.redirect('/views/carrito')
         } catch (error) {
             logger.error(error)
             next(error)
         }
     }
 
-    purchaseCart = async (req, res) => {
+    purchaseCart = async (req, res, next) => {
         try {
-            const { cid } = req.params
-
-            const cart = await this.cartsService.getCart(cid)
-            if (!cart) {
-                return res.status(404).json({ status: 'error', message: 'Cart not found' })
-            }
-            const productUpdates = []
-            const productsNotPurchased = []
-            let totalAmount = 0
-            for (const item of cart) {
-                const id = item.product.toString()
-                const productArray = await this.productService.getProduct({_id: id})
-                const product = productArray[0]
-                const productPrice = product.price
-                if (!product) {
-                    return res.status(404).json({ status: 'error', message: 'Product not found' })
+            const cid = req.session.user.cart
+            let total = 0
+            const cart = await this.cartsService.getCart({_id: cid})
+            const products = await this.productService.getProducts()
+            for (let i = 0; i < cart.products.length; i++) {
+                const index = products.docs.findIndex((elem) => elem.code === cart.products[i].product.code)
+                total += cart.products[i].quantity * products.docs[index].price
+                const NuevoStock = {
+                    title: products.docs[index].title,
+                    description: products.docs[index].description,
+                    price: products.docs[index].price,
+                    stock: products.docs[index].stock - cart.products[i].quantity,
+                    thumbnail: products.docs[index].thumbnail,
+                    code: products.docs[index].code
                 }
-                if (product.stock < item.quantity) {
-                    productsNotPurchased.push(item.product)
-                    continue
-                }
-                product.stock -= item.quantity
-                logger.info(product)
-                productUpdates.push(this.productService.updateProduct(
-                    id,
-                    product.title,
-                    product.description,
-                    product.price,
-                    product.thumbnail,
-                    product.code,
-                    product.stock,
-                    product.status,
-                    product.category
-                ))
-
-                const quantity = item.quantity
-                totalAmount += (quantity * productPrice)
+                const updeteProduct = await this.productService.updateProduct({code: products.docs[index].code}, NuevoStock)
+                const nuevoCarrito = await this.cartsService.deleteProductByCart(cid, products.docs[index]._id)
             }
-
-            const userEmail = req.session.user.email
-            const ticketData = {
-                code: 'TICKET-' + Date.now().toString(36).toUpperCase(),
-                purchase_datetime: new Date(),
-                amount: totalAmount,
-                purchaser: userEmail
+            let code = 0
+            let purchase_datetime = new Date()
+            let amount = total
+            let purchaser = req.session.user.email
+            const tickets = await this.ticketService.getTickets()
+            if(tickets.length === 0){
+                code = 1
+            }else{
+                code = tickets.length + 1
             }
-
-            const ticket = new this.ticketModel(ticketData)
-            await ticket.save()
-
-            try {
-                await Promise.all(productUpdates)
-                return res.status(200).json({ status: 'success', message: 'Stock updated successfully' })
-            } catch (error) {
-                return res.status(500).json({ status: 'error', message: 'Failed to update stock' })
-            }
+            code = code.toString()
+            const resp = await this.ticketService.createTicket({
+                code,
+                purchase_datetime,
+                amount,
+                purchaser
+            })
+            const ticket = await this.ticketService.getTicket({code: code})
+            //const to      = purchaser
+            const to      = 'bordon.marianooscar@gmail.com'
+            const subject = 'Ticket de compra'
+            const html    = `
+            <h1>Gracias por tu compra</h1>
+            <p>codigo: ${ticket.code}</p>
+            <p>fecha: ${ticket.purchase_datetime}</p>
+            <p>monto total: ${ticket.amount}</p>
+            `
+            sendMail(to, subject, html)
+            res.redirect('/views/productos')
         } catch (error) {
             logger.error(error)
             res.status(500).json({ status: 'error', message: 'Server error' })

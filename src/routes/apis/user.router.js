@@ -12,7 +12,7 @@ const {
     premium
 } = new UserController()
 
-router.get('/',authentication, getUsers)
+router.get('/', getUsers)
 
 router.post('/', createUsers)
 

@@ -1,12 +1,11 @@
 const { cartModel } = require("../../models/carts.model.js")
-const { ProductsService } = require("../../repositories/services.js")
 const CustomError = require("../../services/errors/CustomError.js")
 const { Errors } = require("../../services/errors/enums.js")
+
 
 class CartDaoMongo {
     constructor() {
         this.model = cartModel
-        this.productService = ProductsService
     }
 
     async create(newCart) {
@@ -21,33 +20,23 @@ class CartDaoMongo {
         return await this.model.findOne(filter)
     }
 
-    async addProductToCart(cid, pid) {
-        const user = req.session.user
-        const producto = this.productService.getProduct({_id: pid})
-        if (!user || !user.cart) {
-            CustomError.createError({
-                name: 'Add product to cart error',
-                cause: generateCartErrorInfo(user, cid),
-                message: 'Error trying add product to cart',
-                code: Errors.DATABASES_ERROR
-            })}
+    async add(cid, pid) {
         const Cart = await this.getBy({_id: cid})
-        const newCart = {...Cart._doc}
-        const i = newCart.products.findIndex((elm) => elm._id === pid)
-        if(user.email !== producto.owner){
-            if (i === -1) {
-                newCart.products.push({
-                    product: pid,
-                    quantity: 1
-                })
-            } else {
-                newCart.cart[i].quantity++
+        const existingProductIndex = Cart.products.findIndex((item) => item.product.equals(pid))
+        if (existingProductIndex !== -1) {
+            if(Cart.products[existingProductIndex].quantity < Cart.products[existingProductIndex].product.stock){
+                Cart.products[existingProductIndex].quantity += 1
+            }else{
+                logger.info('No podes agregar mas productos')
             }
-            await this.model.updateOne({_id: cid}, newCart)
-            return "añadido correctamente"
-        }else{
-            return 'no puedes añadir ese producto ya que tu lo creaste'
+        } else {
+            Cart.products.push({
+            product: pid,
+            quantity: 1,
+            })
         }
+        await this.model.updateOne({_id: cid}, Cart)
+        return "añadido correctamente"
     }
 
     async deleteProductByCart(cid, pid) {

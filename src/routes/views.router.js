@@ -19,7 +19,8 @@ const {
     productos,
     newProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    carrito
 } = new ViewsController()
 
 router.get('/register', register)
@@ -48,4 +49,5 @@ router.get('/update/:pid', updateProduct)
 
 router.get('/delete/:pid', deleteProduct)
 
+router.get('/carrito', carrito)
 module.exports = router

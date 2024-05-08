@@ -1,4 +1,5 @@
 const express = require('express')
+const { logger } = require('../src/utils/logger')
 
 
 const app = express()
@@ -33,5 +34,5 @@ const PORT = 8080
 app.listen(PORT, err => {
     if (err)  logger.fatal(err)
 
-    console.log(`Escuchando en el puerto ${PORT}`)
+    logger.info(`Escuchando en el puerto ${PORT}`)
 })

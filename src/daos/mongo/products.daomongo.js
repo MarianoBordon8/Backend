@@ -1,11 +1,9 @@
 const { faker } = require('@faker-js/faker')
 const { productModel } = require('../../models/products.model')
-const { usersService } = require('../../repositories/services')
 
 class ProductDaoMongo {
     constructor() {
         this.model = productModel
-        this.users = usersService
     }
 
     get = async (opcionesPaginacion) => {
@@ -16,7 +14,7 @@ class ProductDaoMongo {
         return await this.model.find(filter)
     }
 
-    create = async ({ title, description, price, thumbnail , code, stock }) => {
+    create = async ({ title, description, price, thumbnail , code, stock }, email) => {
         if ( !title || !description || !price || !thumbnail || !code || !stock ) {
             return 'ERROR: debe completar todos los campos'
         }else{
@@ -32,7 +30,7 @@ class ProductDaoMongo {
                     status: true,
                     stock,
                     thumbnail,
-                    owner: 'adminPrueba'
+                    owner: email
                 }
                 await this.model.create(newProduct)
                 return 'se agrego correctamente'

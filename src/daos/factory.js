@@ -4,6 +4,7 @@ const { configObject } = require('../config/index.js')
 let UserDao
 let ProductDao
 let CartDao
+let TicketDao
 
 
 switch (configObject.persistence) {
@@ -16,6 +17,9 @@ switch (configObject.persistence) {
 
         const CartDaoMongo = require('./mongo/Cart.daomongo.js')
         CartDao = CartDaoMongo
+
+        const TicketDaoMongo = require('./mongo/ticket.daomongo.js')
+        TicketDao = TicketDaoMongo
         break;
 
     case 'FILE':
@@ -33,5 +37,6 @@ switch (configObject.persistence) {
 module.exports = {
     ProductDao,
     UserDao,
-    CartDao
+    CartDao,
+    TicketDao
 }
