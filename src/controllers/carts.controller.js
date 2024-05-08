@@ -174,8 +174,7 @@ class CartController{
                 purchaser
             })
             const ticket = await this.ticketService.getTicket({code: code})
-            //const to      = purchaser
-            const to      = 'bordon.marianooscar@gmail.com'
+            const to = purchaser
             const subject = 'Ticket de compra'
             const html    = `
             <h1>Gracias por tu compra</h1>
