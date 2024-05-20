@@ -29,116 +29,115 @@ paths:
                 $ref: "#/components/schemas/Carts"
     delete:
       summary: eliminar un carrito a partir de un id
-        tags:
-          - Carts
-        parameters:
-          - name: cid
-            in: path
-            required: true
-            description: El id del carrito que desea eliminado
-            schema:
-              type: string
-        responses:
-          "200":
-            description: El carrito fue eliminado correctamente
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Carts"
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito que desea eliminado
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El carrito fue eliminado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
 
   /api/carts/{cid}/products/{pid}:
     post:
       summary: agregar producto a un carrito a partir de sus id
-        tags:
-          - Carts
-        parameters:
-          - name: cid
-            in: path
-            required: true
-            description: El id del carrito que desea agregar productos
-            schema:
-              type: string
-          - name: pid
-            in: path
-            required: true
-            description: El id del producto que desea agregar al carrito
-            schema:
-              type: string
-        responses:
-          "200":
-            description: El producto fue agregado correctamente
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Carts"
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito que desea agregar productos
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: El id del producto que desea agregar al carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El producto fue agregado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
     put:
       summary: Editar un producto a un carrito a partir de sus id
-        tags:
-          - Carts
-        parameters:
-          - name: cid
-            in: path
-            required: true
-            description: El id del carrito que desea editar productos
-            schema:
-              type: string
-          - name: pid
-            in: path
-            required: true
-            description: El id del producto que desea editar al carrito
-            schema:
-              type: string
-        responses:
-          "200":
-            description: El producto fue editado correctamente
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Carts"
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito que desea editar productos
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: El id del producto que desea editar al carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El producto fue editado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
     delete:
       summary: Eliminar producto a un carrito a partir de sus id
-        tags:
-          - Carts
-        parameters:
-          - name: cid
-            in: path
-            required: true
-            description: El id del carrito que desea eliminar productos
-            schema:
-              type: string
-          - name: pid
-            in: path
-            required: true
-            description: El id del producto que desea eliminar al carrito
-            schema:
-              type: string
-        responses:
-          "200":
-            description: El producto fue eliminado correctamente
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Carts"
-  /api/carts/:cid/purchase
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito que desea eliminar productos
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: El id del producto que desea eliminar al carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El producto fue eliminado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
+  /api/carts/{cid}/purchase:
     post:
       summary: agregar producto a un carrito a partir de sus id
-        tags:
-          - Carts
-        parameters:
-          - name: cid
-            in: path
-            required: true
-            description: El id del carrito que desea agregar productos
-            schema:
-              type: string
-        responses:
-          "200":
-            description: El producto fue agregado correctamente
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Carts"
-
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El id del carrito que desea agregar productos
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El producto fue agregado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
 
 components:
   schemas:
