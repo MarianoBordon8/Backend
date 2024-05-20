@@ -47,19 +47,19 @@ app.set('views', __dirname + '/views')
 app.use(cookieParser())
 app.use(addLogger)
 
-//const swaggerOptions = {
-//    definition: {
-//        openapi: '3.0.1',
-//        info: {
-//            title: 'Documentación de app',
-//            description: 'Api Docs'
-//        }
-//    },
-//    apis: [`${__dirname}/docs/**/*.yaml`]
-//}
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.1',
+        info: {
+            title: 'Documentación de app',
+            description: 'Api Docs'
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`]
+}
 
-//const specs = swaggerJsDoc(swaggerOptions)
-//app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+const specs = swaggerJsDoc(swaggerOptions)
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 app.use(Approuter)
 app.use(handleError)
@@ -68,16 +68,6 @@ const PORT = configObject.PORT
 const serverHttp = app.listen(PORT, () => {
     logger.info('funciono')
 })
-
-//const serverHttp = () => {
-//    const PORT = configObject.PORT
-//    return app.listen(PORT, err => {
-//        if (err) logger.fatal(err)
-//        logger.info('funciono')
-//    })
-//}
-//
-//module.exports = {serverHttp}
 
 const io = new Server(serverHttp)
 
