@@ -113,6 +113,8 @@ class ViewsController{
     productos = async (req, res) => {
         const {numPage=1, limit=4, sort} = req.query
         const cid = req.session.user.cart
+        const uid = req.session.user.id
+        const user = await this.userService.getUsersBy({_id: uid})
         const opcionesPaginacion = {
             limit: limit,
             page: numPage,
@@ -130,6 +132,8 @@ class ViewsController{
             vacio = false
         }
         res.render('productos.hbs', {
+            role: (user.role).toUpperCase(),
+            uid: uid,
             cid: cid,
             limit,
             sort,
@@ -187,6 +191,26 @@ class ViewsController{
             cid: cid,
             carrito: array,
             array: array2
+        })
+    }
+
+    premium = async (req,res) => {
+        let role
+        const uid = req.session.user.id
+        const user = await this.userService.getUsersBy({_id: uid})
+        switch (user.role) {
+            case 'premium':
+                role = 'user'
+                break;
+            case 'user':
+                role = 'premium'
+                break;
+            default:
+                break;
+            }
+        res.render('premium.hbs',{
+            role,
+            uid
         })
     }
 }

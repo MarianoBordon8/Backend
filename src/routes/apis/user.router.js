@@ -20,6 +20,6 @@ router.put('/:uid', updateUsers)
 
 router.delete('/:uid', deleteUsers)
 
-router.get('/premium/:uid', premium)
+router.post('/premium/:uid', premium)
 
 module.exports = router

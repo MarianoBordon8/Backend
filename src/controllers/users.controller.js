@@ -102,7 +102,7 @@ class UserController{
         try {
             let result
             const { uid } = req.params
-            const user = await this.getUsersBy(uid);
+            const user = await this.getUsersBy(uid)
             switch (user.role) {
                 case 'premium':
                     result = await this.userService.updateUsers({_id: uid}, {role: 'user'})
@@ -112,12 +112,8 @@ class UserController{
                     break;
                 default:
                     break;
-                }
-            const user2 = await this.getUsersBy(uid);
-            res.status(200).send({
-                status: "success",
-                payload: `el role cambio a ${user2.role}`
-            })
+            }
+            res.status(200).redirect('/views/productos')
         } catch (error) {
             logger.error(error)
             next(error)
