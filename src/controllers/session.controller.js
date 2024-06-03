@@ -12,104 +12,124 @@ class SessionController{
         this.carts = cartsService
     }
     registe = async (req, res)=>{
-        const { first_name, last_name, email, password, age} = req.body
+        try {
+            const { first_name, last_name, email, password, age} = req.body
 
-        if (first_name ==='' || password === "" || email === '' || age === '') {
-            req.session.errorMessageRegister = 'faltan completar campos obligatorios'
-            return res.redirect('../../views/register')
-        }
+            if (first_name ==='' || password === "" || email === '' || age === '') {
+                req.session.errorMessageRegister = 'faltan completar campos obligatorios'
+                return res.redirect('../../views/register')
+            }
 
-        const userFound = await this.users.getBy({email: email})
-        if (userFound) {
-            req.session.errorMessageRegister = 'Ya existe el user'
-            return res.redirect('../../views/register')
-        }
+            const userFound = await this.users.getBy({email: email})
+            if (userFound) {
+                req.session.errorMessageRegister = 'Ya existe el user'
+                return res.redirect('../../views/register')
+            }
 
-        const cart = await this.carts.createCart()
+            const cart = await this.carts.createCart()
 
-        const newUser = {
-            first_name,
-            last_name,
-            email,
-            password: createHash(password),
-            age,
-            cart: cart._id
+            const newUser = {
+                first_name,
+                last_name,
+                email,
+                password: createHash(password),
+                age,
+                cart: cart._id
+            }
+            const result = await this.users.create(newUser)
+            req.session.user  = {
+                id: newUser._id,
+                first_name: newUser.first_name,
+                last_name: newUser.last_name,
+                email: newUser.email,
+                role: newUser.role,
+                cart: newUser.cart
+            }
+            const token = createToken({id: result._id, role: result.role}, '24h')
+            res.cookie('token', token, {
+                maxAge: 60*60*1000*24,
+                httpOnly: true,
+            }).redirect('/views/productos')
+        } catch (error) {
+            logger.error(error)
+                next(error)
         }
-        const result = await this.users.create(newUser)
-        req.session.user  = {
-            id: newUser._id,
-            first_name: newUser.first_name,
-            last_name: newUser.last_name,
-            email: newUser.email,
-            role: newUser.role,
-            cart: newUser.cart
-        }
-        const token = createToken({id: result._id, role: result.role}, '24h')
-        res.cookie('token', token, {
-            maxAge: 60*60*1000*24,
-            httpOnly: true,
-        }).redirect('/views/productos')
     }
 
     login = async (req, res)=>{
-        const {email , password } = req.body
-        if (email === '' || password === '') {
-            req.session.errorMessageLogin = 'todos los campos son obligatorios'
-            return res.redirect('../../views/login')
-        }
-
-        const user = await this.users.getBy({email: email})
-        if ( !user ){
-            req.session.errorMessageLogin = 'email no encontrado';
-            return res.redirect('../../views/login')
-        }
-
-        if(!isValidPassword(password, user)) {
-            req.session.errorMessageLogin = 'password equivocada';
-            return res.redirect('../../views/login')
-        }
-
-        if(user.email === 'adminCoder@coder.com' && isValidPassword('adminCod3r123', user)){
-            req.session.user = {
-                role: 'admin'
+        try {
+            const {email , password } = req.body
+            if (email === '' || password === '') {
+                req.session.errorMessageLogin = 'todos los campos son obligatorios'
+                return res.redirect('../../views/login')
             }
-            const cambio = await this.users.update({_id: user._id},{role: 'admin'} )
+    
+            const user = await this.users.getBy({email: email})
+            if ( !user ){
+                req.session.errorMessageLogin = 'email no encontrado';
+                return res.redirect('../../views/login')
+            }
+    
+            if(!isValidPassword(password, user)) {
+                req.session.errorMessageLogin = 'password equivocada';
+                return res.redirect('../../views/login')
+            }
+    
+            if(user.email === 'adminCoder@coder.com' && isValidPassword('adminCod3r123', user)){
+                req.session.user = {
+                    role: 'admin'
+                }
+                const cambio = await this.users.update({_id: user._id},{role: 'admin'} )
+            }
+            const token = createToken({id: user._id, role: user.role}, '24h')
+            req.session.user  = {
+                id: user._id,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                email: user.email,
+                role: user.role,
+                cart: user.cart._id
+            }
+            res.cookie('token', token, { maxAge: 60*60*1000*24, httpOnly: true,}).redirect('/views/productos')
+        } catch (error) {
+            logger.error(error)
+            next(error)
         }
-        const token = createToken({id: user._id, role: user.role}, '24h')
-        req.session.user  = {
-            id: user._id,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            email: user.email,
-            role: user.role,
-            cart: user.cart._id
-        }
-        res.cookie('token', token, { maxAge: 60*60*1000*24, httpOnly: true,}).redirect('/views/productos')
     }
 
     current = (req, res) => {
-        res.send({message: 'info sensible que solo puede ver el admin', reqUser: req.session.user})
+        try {
+            res.send({message: 'info sensible que solo puede ver el admin', reqUser: req.session.user})
+        } catch (error) {
+            logger.error(error)
+            next(error)
+        }
     }
 
     reestablecer = async (req, res) => {
-        const email = req.body.email;
-        const user = await this.users.getBy({email: email})
-        if(!user){
-            req.session.errorMessageLogin = 'Usuario no Encontrado'
-            return res.redirect('../../views/login')
+        try {
+            const email = req.body.email;
+            const user = await this.users.getBy({email: email})
+            if(!user){
+                req.session.errorMessageLogin = 'Usuario no Encontrado'
+                return res.redirect('../../views/login')
+            }
+            const token = createToken({id: user._id, role: user.role}, '1h')
+            const enviar = {
+                email: 'bordon.marianooscar@gmail.com',
+                first_name: 'Mariano',
+                last_name: 'Bordon'
+            }
+            const to      = enviar.email
+            const subject = 'Esto es un mail de prueba'
+            const html    = 'http://localhost:8080/views/newpassword'
+            sendMail(to, subject, html)
+            req.session.token = token
+            res.redirect('../../views/miratumail')
+        } catch (error) {
+            logger.error(error)
+            next(error)
         }
-        const token = createToken({id: user._id, role: user.role}, '1h')
-        const enviar = {
-            email: 'bordon.marianooscar@gmail.com',
-            first_name: 'Mariano',
-            last_name: 'Bordon'
-        }
-        const to      = enviar.email
-        const subject = 'Esto es un mail de prueba'
-        const html    = 'http://localhost:8080/views/newpassword'
-        sendMail(to, subject, html)
-        req.session.token = token
-        res.redirect('../../views/miratumail');
     }
 
     newpassword = async (req, res)=>{
